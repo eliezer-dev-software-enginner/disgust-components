@@ -62,7 +62,7 @@ public final class Pack {
         return new Row().children(
                 new Image(imgPath, new ImageProps().size(25)),
                 new SpacerHorizontal(5),
-                new Text(text, new TextProps().color("white").fontSize(14))
+                new Text(text, new TextProps().textColor("white").fontSize(14))
         );
     }
 
@@ -457,7 +457,7 @@ public final class Pack {
 
         TextProps labelProps = new TextProps().fontSize(ThemeManager.theme().typography().small());
         if (labelColor != null) {
-            labelProps.color(labelColor);
+            labelProps.textColor(labelColor);
             labelProps.textColor(labelColor);
         }
 
