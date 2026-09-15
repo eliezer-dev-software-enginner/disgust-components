@@ -242,7 +242,7 @@ public final class Pack {
 
     public static Component DatePickerColumn(State<LocalDate> localDateState, String label, IconInterface icon) {
         var datePicker = new DatePicker(localDateState,
-                new DatePickerProps().fontSize(ThemeManager.theme().typography().small()).height(31)
+                new DatePickerProps().fontSize(ThemeManager.theme().typography().small())
                         .placeHolder("dd/mm/yyyy")
                         .locale(new Locale("pt", "BR"))
                         .pattern("dd/MM/yyyy")
@@ -406,11 +406,7 @@ public final class Pack {
     // ---------------- Input genérico ----------------
 
     public static InputProps getInputPropsV2(String placeholder) {
-        return getInputPropsV2(placeholder, 31);
-    }
-
-    static InputProps getInputPropsV2(String placeholder, int height) {
-        return new InputProps().height(height)
+        return new InputProps()
                 .placeHolder(placeholder).fontSize(ThemeManager.theme().typography().small());
     }
 
@@ -453,7 +449,8 @@ public final class Pack {
         var props = getInputPropsV2(placeholder);
         if (disableInput) props.disable();
         props.width(width != null ? width : 220);
-        props.height(height != null ? height : 35);
+
+        if(height!=null) props.height(height);
 
         TextProps labelProps = new TextProps().fontSize(ThemeManager.theme().typography().small());
         if (labelColor != null) {
@@ -487,11 +484,11 @@ public final class Pack {
     }
 
     public static Column InputColumn(String label, ReadableState<String> inputState, String placeholder, boolean disableInput) {
-        return InputColumn(label, inputState, placeholder, disableInput, null, null, 35);
+        return InputColumn(label, inputState, placeholder, disableInput, null, null);
     }
 
-    public static Column InputColumn(String label, ReadableState<String> inputState, String placeholder, boolean disableInput, Integer width, Integer height) {
-        return InputColumn(label, inputState, placeholder, disableInput, null, width, height);
+    public static Column InputColumn(String label, ReadableState<String> inputState, String placeholder, boolean disableInput, Integer width) {
+        return InputColumn(label, inputState, placeholder, disableInput, null, width);
     }
 
     public static Column InputColumnAuthFill(String label, ReadableState<String> inputState, String placeholder) {
@@ -511,11 +508,11 @@ public final class Pack {
     }
 
     public static Column InputColumnAuth(String label, ReadableState<String> inputState, String placeholder, int width) {
-        return InputColumn(label, inputState, placeholder, false, width, 35);
+        return InputColumn(label, inputState, placeholder, false, width);
     }
 
     public static Column InputColumn(String label, ReadableState<String> inputState, String placeholder, Integer width) {
-        return InputColumn(label, inputState, placeholder, false, width, 35);
+        return InputColumn(label, inputState, placeholder, false, width);
     }
 
     public static Column InputColumn(String label, ReadableState<String> inputState, String placeholder) {
