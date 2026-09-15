@@ -404,9 +404,15 @@ public final class Pack {
     }
 
     // ---------------- Input genérico ----------------
-
+@Deprecated(forRemoval = true)
     public static InputProps getInputPropsV2(String placeholder) {
         return new InputProps()
+                .placeHolder(placeholder).fontSize(ThemeManager.theme().typography().small());
+    }
+
+
+    public static megalodonte.props.InputProps getInputProps(String placeholder) {
+        return new megalodonte.props.InputProps()
                 .placeHolder(placeholder).fontSize(ThemeManager.theme().typography().small());
     }
 

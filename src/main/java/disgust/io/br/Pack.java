@@ -28,8 +28,13 @@ public final class Pack {
 
     private Pack() {}
 
+    @Deprecated(forRemoval = true)
     private static InputProps getInputPropsV2(String placeholder, int width) {
         return disgust.io.Pack.getInputPropsV2(placeholder).width(width);
+    }
+
+    private static megalodonte.props.InputProps getInputProps(String placeholder, int width) {
+        return disgust.io.Pack.getInputProps(placeholder).width(width);
     }
 
     public static Component InputColumnCep(String label, State<String> inputState) {
@@ -104,11 +109,14 @@ public final class Pack {
 
     public static Component InputColumnCurrency(String label, State<String> inputState, boolean disableInput) {
         var fonticon = FontIcon.of(Entypo.CREDIT, 15, Color.web("green"));
-        var inputProps = getInputPropsV2("R$ 0,00", 140);
-        if (disableInput) inputProps.disable();
+        var inputProps = getInputProps("R$ 0,00", 140);
+        if (disableInput) {
+            fonticon = FontIcon.of(Entypo.BLOCK,13,Color.web("red"));
+            inputProps.disable();
+        }
 
         // inputState armazena valores brutos (em centavos), campo exibe formato BRL
-        var input = new Input(inputState, inputProps)
+        var input = new megalodonte.components.inputs.Input(inputState, inputProps)
                 .onInitialize(value -> {
                     if (value.matches("\\d+")) {
                         BigDecimal realValue = new BigDecimal(value).movePointLeft(2);
