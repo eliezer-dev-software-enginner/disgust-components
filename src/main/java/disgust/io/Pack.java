@@ -452,7 +452,7 @@ public final class Pack {
     public static Column InputColumn(String label, ReadableState<String> inputState, String placeholder, boolean disableInput,
                                      int borderWidth, int borderRadius, String borderColor, String labelColor,
                                      Integer width, Integer height) {
-        var props = getInputPropsV2(placeholder);
+        var props = getInputProps(placeholder);
         if (disableInput) props.disable();
         props.width(width != null ? width : 220);
 
@@ -466,7 +466,7 @@ public final class Pack {
 
         return new Column()
                 .c_child(new Text(label, labelProps))
-                .c_child(new Input((State<String>) inputState,
+                .c_child(new megalodonte.components.inputs.Input((State<String>) inputState,
                         props.borderWidth(borderWidth).borderColor(borderColor).borderRadius(borderRadius)
                 ));
     }
