@@ -29,7 +29,6 @@ import megalodonte.components.layout_components.Row;
 import megalodonte.components.v2.Input;
 import megalodonte.props.*;
 import megalodonte.props.v2.InputProps;
-import megalodonte.router.v4.ScreenContext;
 import megalodonte.v2.ListState;
 import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.antdesignicons.AntDesignIconsOutlined;
@@ -132,106 +131,6 @@ public final class Pack {
         );
 
         return Component.CreateFromJavaFxNode(scroll);
-    }
-
-    // ---------------- Popups / modais / alerts ----------------
-
-    public static void ShowPopupWithButton(
-            ScreenContext screenContext, String message, String btnTitle, RunnableThrowing callback) {
-        Popup popup = new Popup();
-        popup.setAutoHide(false);
-
-        Label label = new Label(message);
-        label.setStyle("""
-                    -fx-background-color: #333;
-                    -fx-text-fill: white;
-                    -fx-padding: 10 16;
-                    -fx-background-radius: 6;
-                """);
-
-        Card card = new Card(new Container()
-                .children(
-                        Component.CreateFromJavaFxNode(label),
-                        new SpacerVertical(15),
-                        new Row(new RowProps().spacingOf(10)).children(
-                                new Button(btnTitle).onClick(callback),
-                                new Button("Fechar", new ButtonProps().bgColor("red")).onClick(() -> {
-                                    callback.run();
-                                    popup.hide();
-                                })
-                        )
-                ));
-
-        popup.getContent().add(card.getJavaFxNode());
-        popup.show(screenContext.selfStage());
-    }
-
-    public static void ShowPopup(ScreenContext context, String message) {
-        Popup popup = new Popup();
-
-        Label label = new Label(message);
-        label.setStyle("""
-                    -fx-background-color: #333;
-                    -fx-text-fill: white;
-                    -fx-padding: 10 16;
-                    -fx-background-radius: 6;
-                """);
-
-        popup.getContent().add(label);
-        popup.setAutoHide(true);
-        popup.show(context.selfStage());
-    }
-
-    public static Stage ShowModal(Component ui, ScreenContext context, int height) {
-        Stage stage = new Stage();
-
-        Scroll scroll = new Scroll(ui);
-        stage.setScene(new Scene((Parent) scroll.getJavaFxNode(), 800, height));
-        stage.setTitle("Detalhes");
-
-        Stage owner = context.selfStage();
-        stage.initOwner(owner);
-
-        stage.setOnHidden(event -> {
-            owner.requestFocus();
-            owner.toFront();
-        });
-
-        stage.show();
-        return stage;
-    }
-
-    public static void ShowModal(Component ui, ScreenContext context) {
-        ShowModal(ui, context, 500);
-    }
-
-    public static void ShowAlertAdvice(String bodyMessage, RunnableThrowing handleSuccessEvent) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText(bodyMessage);
-        alert.setContentText("Essa ação não poderá ser desfeita.");
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-                handleSuccessEvent.run();
-            } catch (Exception e) {
-                ErrorReporter.handle(e);
-                throw new IllegalStateException(e);
-            }
-        }
-    }
-
-    public static void ShowAlertError(String message) {
-        Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setTitle("Erro");
-        alert.initModality(Modality.NONE); // não deixa o Glass tocar na janela owner
-
-        ButtonType okButton = new ButtonType("Fechar", ButtonBar.ButtonData.OK_DONE);
-        alert.getButtonTypes().add(okButton);
-        alert.setContentText(message);
-        alert.show();
     }
 
     // ---------------- Date picker ----------------
