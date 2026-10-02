@@ -1,0 +1,260 @@
+:root {
+    --primary: #1976d2;
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --border: #e0e0e0;
+    --text: #1a1a1a;
+    --text-secondary: #666;
+    --code-bg: #1e1e2e;
+    --radius: 8px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-title {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 0 24px 16px;
+    color: var(--primary);
+}
+
+#nav a {
+    display: block;
+    padding: 8px 24px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    border-left: 3px solid transparent;
+}
+
+#nav a:hover {
+    background: #f0f4ff;
+    color: var(--primary);
+}
+
+#nav a.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    background: #f0f4ff;
+    font-weight: 600;
+}
+
+.content {
+    flex: 1;
+    padding: 40px 56px;
+    max-width: 960px;
+}
+
+h1 {
+    font-size: 32px;
+    margin: 0 0 8px;
+}
+
+.component-description {
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin-bottom: 32px;
+}
+
+h2 {
+    font-size: 22px;
+    margin: 48px 0 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+h2 .muted {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.example-description {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin: 0 0 12px;
+}
+
+.code-block {
+    position: relative;
+    background: var(--code-bg);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.code-block pre {
+    margin: 0;
+    padding: 20px;
+    overflow-x: auto;
+    font-family: "Fira Code", Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #d4d4e8;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255,255,255,0.1);
+    color: #ccc;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.copy-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+}
+
+th {
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+td code, .inline-code {
+    background: #f0f0f5;
+    color: #9333ea;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: Consolas, monospace;
+    font-size: 12.5px;
+}
+
+.badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+}
+
+.badge-required {
+    background: #fde8e8;
+    color: #c0392b;
+}
+
+.enum-pill {
+    display: inline-block;
+    background: #eef1ff;
+    color: var(--primary);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12.5px;
+    margin: 2px 4px 2px 0;
+    font-family: Consolas, monospace;
+}
+
+.shortcut-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 10px;
+}
+
+.shortcut-name {
+    font-weight: 600;
+    font-family: Consolas, monospace;
+    color: var(--primary);
+}
+
+.shortcut-overload {
+    font-family: Consolas, monospace;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.constraints-list {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-size: 13.5px;
+    margin-top: 8px;
+}
+
+.constraints-list li { margin-bottom: 4px; }
+
+
+.preview-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.preview-btn {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+}
+
+.preview-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-size-small { padding: 4px 10px; font-size: 13px; }
+.btn-size-medium { padding: 8px 16px; font-size: 14px; }
+.btn-size-large { padding: 11px 22px; font-size: 16px; }
+
+.preview-icon {
+    display: inline-block;
+    vertical-align: -0.15em;
+    margin: 0 6px;
+    font-size: 1.1em;
+    color: inherit; /* iconify-icon herda currentColor por padrão — mesmo efeito do Button.icon() real, que colore o ícone com a cor do texto resolvida */
+}

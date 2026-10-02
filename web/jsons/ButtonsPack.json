@@ -1,0 +1,237 @@
+{
+  "component": "Button",
+  "package": "disgust.io.ButtonsPack",
+  "description": "Botão com variações de cor semântica, preenchimento e tamanho, inspirado na API do MUI Button.",
+ "palette": {
+  "note": "Cores do DefaultTheme (megalodonte.theme.DefaultTheme) — no app real, variam conforme o tema ativo.",
+  "PRIMARY": "#2563eb",
+  "SECONDARY": "#64748b",
+  "SUCCESS": "#10b981",
+  "WARNING": "#f59e0b",
+  "DANGER": "#ef4444",
+  "GHOST": "transparent",
+  "DISABLED": "#64748b",
+  "textOnFilled": "#ffffff",
+  "border": "transparent"
+},
+  "props": {
+    "text": {
+      "type": "String",
+      "required": true,
+      "description": "Conteúdo textual do botão."
+    },
+    "variant": {
+      "type": "enum",
+      "enumRef": "ButtonVariant",
+      "default": "PRIMARY",
+      "description": "Cor semântica do botão."
+    },
+    "style": {
+      "type": "enum",
+      "enumRef": "ButtonStyle",
+      "default": "FILLED",
+      "description": "Preenchimento visual — equivalente ao 'variant' do MUI (contained/outlined/text)."
+    },
+    "size": {
+      "type": "enum",
+      "enumRef": "ButtonSize",
+      "default": "MEDIUM",
+      "description": "Tamanho do botão — controla padding e fontSize, não a altura fixa."
+    },
+    "fillWidth": {
+      "type": "boolean",
+      "default": false,
+      "description": "Estica o botão na largura disponível do pai."
+    },
+    "iconStart": {
+      "type": "Ikon",
+      "required": false,
+      "description": "Ícone exibido antes do texto. Mutuamente exclusivo com iconEnd."
+    },
+    "iconEnd": {
+      "type": "Ikon",
+      "required": false,
+      "description": "Ícone exibido depois do texto. Mutuamente exclusivo com iconStart."
+    },
+    "href": {
+      "type": "String",
+      "required": false,
+      "description": "Navega via Redirect.to(href) ao clicar. Mutuamente exclusivo com onClick."
+    },
+    "onClick": {
+      "type": "RunnableThrowing",
+      "required": false,
+      "description": "Callback executado ao clicar. Mutuamente exclusivo com href."
+    }
+  },
+  "enums": {
+    "ButtonVariant": [
+      { "value": "PRIMARY", "colorToken": "theme.colors().primary()" },
+      { "value": "SECONDARY", "colorToken": "theme.colors().secondary()" },
+      { "value": "SUCCESS", "colorToken": "theme.colors().success()" },
+      { "value": "WARNING", "colorToken": "theme.colors().warning()" },
+      { "value": "DANGER", "colorToken": "theme.colors().danger()" },
+      { "value": "GHOST", "colorToken": "transparent" },
+      { "value": "DISABLED", "colorToken": "theme.colors().textSecondary()" }
+    ],
+    "ButtonStyle": [
+      { "value": "FILLED", "muiEquivalent": "contained" },
+      { "value": "OUTLINED", "muiEquivalent": "outlined" },
+      { "value": "TEXT", "muiEquivalent": "text" }
+    ],
+    "ButtonSize": [
+      { "value": "SMALL", "fontSize": 13, "paddingH": 10, "paddingV": 4 },
+      { "value": "MEDIUM", "fontSize": 14, "paddingH": 16, "paddingV": 8 },
+      { "value": "LARGE", "fontSize": 16, "paddingH": 22, "paddingV": 11 }
+    ]
+  },
+  "constraints": [
+    "iconStart e iconEnd são mutuamente exclusivos",
+    "href e onClick são mutuamente exclusivos",
+    "href ou onClick é obrigatório — ao menos um deve ser definido"
+  ],
+  "shortcuts": [
+    {
+      "name": "ContainedButton",
+      "style": "FILLED",
+      "overloads": [
+        { "params": ["text: String", "variant: ButtonVariant", "href: String"] },
+        { "params": ["text: String", "variant: ButtonVariant", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "props: Props"] }
+      ]
+    },
+    {
+      "name": "ContainedButtonWithIconStart",
+      "style": "FILLED",
+      "icon": "start",
+      "overloads": [
+        { "params": ["text: String", "variant: ButtonVariant", "icon: Ikon", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Ikon", "onClick: RunnableThrowing"] }
+      ]
+    },
+    {
+      "name": "ContainedButtonWithIconEnd",
+      "style": "FILLED",
+      "icon": "end",
+      "overloads": [
+        { "params": ["text: String", "variant: ButtonVariant", "icon: Ikon", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Ikon", "onClick: RunnableThrowing"] }
+      ]
+    },
+    {
+      "name": "OutlinedButton",
+      "style": "OUTLINED",
+      "overloads": [
+        { "params": ["text: String", "variant: ButtonVariant", "href: String"] },
+        { "params": ["text: String", "variant: ButtonVariant", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "props: Props"] }
+      ]
+    },
+    {
+      "name": "OutlinedButtonWithIconStart",
+      "style": "OUTLINED",
+      "icon": "start",
+      "overloads": [
+        { "params": ["text: String", "variant: ButtonVariant", "icon: Ikon", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Ikon", "onClick: RunnableThrowing"] }
+      ]
+    },
+    {
+      "name": "OutlinedButtonWithIconEnd",
+      "style": "OUTLINED",
+      "icon": "end",
+      "overloads": [
+        { "params": ["text: String", "variant: ButtonVariant", "icon: Ikon", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Ikon", "onClick: RunnableThrowing"] }
+      ]
+    },
+    {
+      "name": "TextButton",
+      "style": "TEXT",
+      "overloads": [
+        { "params": ["text: String", "variant: ButtonVariant", "href: String"] },
+        { "params": ["text: String", "variant: ButtonVariant", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "props: Props"] }
+      ]
+    },
+    {
+      "name": "TextButtonWithIconStart",
+      "style": "TEXT",
+      "icon": "start",
+      "overloads": [
+        { "params": ["text: String", "variant: ButtonVariant", "icon: Ikon", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Ikon", "onClick: RunnableThrowing"] }
+      ]
+    },
+    {
+      "name": "TextButtonWithIconEnd",
+      "style": "TEXT",
+      "icon": "end",
+      "overloads": [
+        { "params": ["text: String", "variant: ButtonVariant", "icon: Ikon", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Ikon", "onClick: RunnableThrowing"] }
+      ]
+    }
+  ],
+ "examples": [
+    {
+      "title": "Variant",
+      "description": "Três estilos de preenchimento: filled, outlined e text.",
+      "preview": [
+        { "text": "Contained", "variant": "PRIMARY", "style": "FILLED" },
+        { "text": "Outlined", "variant": "PRIMARY", "style": "OUTLINED" },
+        { "text": "Text", "variant": "PRIMARY", "style": "TEXT" }
+      ],
+      "code": "ButtonsPack.ContainedButton(\"Contained\", ButtonVariant.PRIMARY, this::handleClick);\nButtonsPack.OutlinedButton(\"Outlined\", ButtonVariant.PRIMARY, this::handleClick);\nButtonsPack.TextButton(\"Text\", ButtonVariant.PRIMARY, this::handleClick);"
+    },
+    {
+      "title": "Color",
+      "description": "Variação de cor semântica sobre o estilo FILLED.",
+      "preview": [
+        { "text": "Primary", "variant": "PRIMARY", "style": "FILLED" },
+        { "text": "Success", "variant": "SUCCESS", "style": "FILLED" },
+        { "text": "Danger", "variant": "DANGER", "style": "OUTLINED" },
+        { "text": "Secondary", "variant": "SECONDARY", "style": "TEXT" }
+      ],
+      "code": "ButtonsPack.ContainedButton(\"Primary\", ButtonVariant.PRIMARY, this::handleClick);\nButtonsPack.ContainedButton(\"Success\", ButtonVariant.SUCCESS, this::handleClick);\nButtonsPack.OutlinedButton(\"Danger\", ButtonVariant.DANGER, this::handleClick);\nButtonsPack.TextButton(\"Secondary\", ButtonVariant.SECONDARY, this::handleClick);"
+    },
+    {
+      "title": "Sizes",
+      "description": "Três tamanhos: small, medium (padrão) e large — afetam padding e fontSize, não a altura fixa.",
+      "preview": [
+        { "text": "Small", "variant": "PRIMARY", "style": "FILLED", "size": "SMALL" },
+        { "text": "Medium", "variant": "PRIMARY", "style": "FILLED", "size": "MEDIUM" },
+        { "text": "Large", "variant": "PRIMARY", "style": "FILLED", "size": "LARGE" }
+      ],
+      "code": "ButtonsPack.ContainedButton(\"Small\", new ButtonsPack.Props().variant(ButtonVariant.PRIMARY).small().onClick(this::handleClick));\nButtonsPack.ContainedButton(\"Medium\", new ButtonsPack.Props().variant(ButtonVariant.PRIMARY).onClick(this::handleClick));\nButtonsPack.ContainedButton(\"Large\", new ButtonsPack.Props().variant(ButtonVariant.PRIMARY).large().onClick(this::handleClick));"
+    },
+    {
+  "title": "Icons",
+  "description": "Ícone no início ou no fim do texto.",
+  "preview": [
+    { "text": "Delete", "variant": "DANGER", "style": "FILLED", "icon": { "position": "start", "name": "delete-outlined" } },
+    { "text": "Send", "variant": "PRIMARY", "style": "FILLED", "icon": { "position": "end", "name": "send-outlined" } }
+  ],
+  "code": "ButtonsPack.ContainedButtonWithIconStart(\"Delete\", ButtonVariant.DANGER, AntDesignIconsOutlined.DELETE, this::handleDelete);\nButtonsPack.ContainedButtonWithIconEnd(\"Send\", ButtonVariant.PRIMARY, AntDesignIconsOutlined.SEND, this::handleSend);"
+},
+    {
+      "title": "Full width",
+      "description": "Estica o botão na largura disponível do pai.",
+      "preview": [
+        { "text": "Salvar", "variant": "SUCCESS", "style": "FILLED", "fillWidth": true }
+      ],
+      "code": "ButtonsPack.ContainedButton(\"Salvar\", ButtonVariant.SUCCESS, true, this::handleSave);"
+    },
+    {
+      "title": "Link button",
+      "description": "Navega para uma rota ao clicar, em vez de executar um callback.",
+      "preview": [
+        { "text": "Ir para produtos", "variant": "PRIMARY", "style": "FILLED" }
+      ],
+      "code": "ButtonsPack.ContainedButton(\"Ir para produtos\", ButtonVariant.PRIMARY, \"produtos/\");"
+    }
+  ]
+}
