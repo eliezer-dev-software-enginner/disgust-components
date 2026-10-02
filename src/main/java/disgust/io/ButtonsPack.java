@@ -106,9 +106,52 @@ public final class ButtonsPack {
         return button(text, props);
     }
 
+    // -- Contained --
+
+    public static Button ContainedButton(String text, ButtonVariant variant, String href) {
+        return buildShortcut(text, variant, ButtonStyle.FILLED, false, null, null, href, null);
+    }
+
+    public static Button ContainedButton(String text, ButtonVariant variant, RunnableThrowing onClick) {
+        return buildShortcut(text, variant, ButtonStyle.FILLED, false, null, null, null, onClick);
+    }
+
+    public static Button ContainedButton(String text, ButtonVariant variant, boolean fillWidth, RunnableThrowing onClick) {
+        return buildShortcut(text, variant, ButtonStyle.FILLED, fillWidth, null, null, null, onClick);
+    }
+
+    public static Button ContainedButtonWithIconStart(String text, ButtonVariant variant, Ikon icon, RunnableThrowing onClick) {
+        return buildShortcut(text, variant, ButtonStyle.FILLED, false, icon, null, null, onClick);
+    }
+
+    public static Button ContainedButtonWithIconStart(String text, ButtonVariant variant, boolean fillWidth, Ikon icon, RunnableThrowing onClick) {
+        return buildShortcut(text, variant, ButtonStyle.FILLED, fillWidth, icon, null, null, onClick);
+    }
+
+    public static Button ContainedButtonWithIconEnd(String text, ButtonVariant variant, Ikon icon, RunnableThrowing onClick) {
+        return buildShortcut(text, variant, ButtonStyle.FILLED, false, null, icon, null, onClick);
+    }
+
+    public static Button ContainedButtonWithIconEnd(String text, ButtonVariant variant, boolean fillWidth, Ikon icon, RunnableThrowing onClick) {
+        return buildShortcut(text, variant, ButtonStyle.FILLED, fillWidth, null, icon, null, onClick);
+    }
+
+    public static Button ContainedButton(String text, Props props) {
+        return button(text, props.filled());
+    }
+
+    // -- Outlined --
 
     public static Button OutlinedButton(String text, ButtonVariant variant, String href) {
         return buildShortcut(text, variant, ButtonStyle.OUTLINED, false, null, null, href, null);
+    }
+
+    public static Button OutlinedButton(String text, ButtonVariant variant, RunnableThrowing onClick) {
+        return buildShortcut(text, variant, ButtonStyle.OUTLINED, false, null, null, null, onClick);
+    }
+
+    public static Button OutlinedButton(String text, ButtonVariant variant, boolean fillWidth, RunnableThrowing onClick) {
+        return buildShortcut(text, variant, ButtonStyle.OUTLINED, fillWidth, null, null, null, onClick);
     }
 
     public static Button OutlinedButtonWithIconStart(String text, ButtonVariant variant, Ikon icon, RunnableThrowing onClick) {
@@ -127,8 +170,18 @@ public final class ButtonsPack {
         return buildShortcut(text, variant, ButtonStyle.OUTLINED, fillWidth, null, icon, null, onClick);
     }
 
+    public static Button OutlinedButton(String text, Props props) {
+        return button(text, props.outlined());
+    }
+
+    // -- Text --
+
     public static Button TextButton(String text, ButtonVariant variant, String href) {
         return buildShortcut(text, variant, ButtonStyle.TEXT, false, null, null, href, null);
+    }
+
+    public static Button TextButton(String text, ButtonVariant variant, RunnableThrowing onClick) {
+        return buildShortcut(text, variant, ButtonStyle.TEXT, false, null, null, null, onClick);
     }
 
     public static Button TextButton(String text, ButtonVariant variant, boolean fillWidth, RunnableThrowing onClick) {
@@ -150,4 +203,9 @@ public final class ButtonsPack {
     public static Button TextButtonWithIconEnd(String text, ButtonVariant variant, boolean fillWidth, Ikon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.TEXT, fillWidth, null, icon, null, onClick);
     }
+
+    public static Button TextButton(String text, Props props) {
+        return button(text, props.text());
+    }
+
 }
