@@ -1,6 +1,7 @@
 plugins {
-    id("java")
+    id("java-library")
     id("maven-publish")
+    id("org.gradlex.extra-java-module-info") version "1.14.2"
 
     // 🛑 CORREÇÃO: Usando o ID e a versão CORRETOS conforme a documentação oficial.
     id("org.openjfx.javafxplugin") version "0.1.0"
@@ -33,6 +34,7 @@ javafx {
 }
 
 dependencies {
+    testImplementation("megalodonte:megalodonte-theme:1.0.0-beta")
     // Dependências de teste (mantidas)
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -48,25 +50,20 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
 
     // Megalodonte
-    implementation("megalodonte:megalodonte-base:1.0.0-beta")
-    implementation("megalodonte:megalodonte-components:1.0.0-beta")
-    implementation("megalodonte:megalodonte-reactivity:1.0.0-beta")
+    api("megalodonte:megalodonte-base:1.0.0-beta")
+    api("megalodonte:megalodonte-components:1.0.0-beta")
+    api("megalodonte:megalodonte-reactivity:1.0.0-beta")
     implementation("megalodonte:megalodonte-router:1.0.0-beta")
 
     //utilitties
     implementation("com.github.eliezer-dev-software-enginner:pack-utilities:v1.0.0")
 
-    //ikonli
-    implementation("org.kordamp.ikonli:ikonli-core:12.4.0")
-    implementation("org.kordamp.ikonli:ikonli-javafx:12.4.0")
-    implementation("org.kordamp.ikonli:ikonli-antdesignicons-pack:12.4.0")
-    implementation("org.kordamp.ikonli:ikonli-entypo-pack:12.4.0")
+    api(project(":disgust-icons"))
 }
 
 
 tasks.test {
-    enabled = false //ignorando testes
-    //useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 tasks.named<Test>("test") {
@@ -99,4 +96,11 @@ publishing {
             artifactId = "distust-io-components"
         }
     }
+}
+
+// The published utilities JAR lacks module metadata and its v1.0.0 filename
+// cannot yield a valid automatic module name.
+extraJavaModuleInfo {
+    failOnMissingModuleInfo.set(false)
+    automaticModule("com.github.eliezer-dev-software-enginner:pack-utilities", "pack.utilities")
 }

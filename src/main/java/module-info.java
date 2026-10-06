@@ -7,10 +7,7 @@ module disgust.components {
     requires transitive javafx.graphics;
     requires transitive javafx.controls;
 
-    requires org.kordamp.ikonli.core;
-    requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.ikonli.antdesignicons;
-    requires org.kordamp.ikonli.entypo;
+    requires transitive disgust.icons;
 
     requires pack.utilities;
 

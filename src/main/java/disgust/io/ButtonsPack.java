@@ -10,8 +10,9 @@ import megalodonte.props.ButtonProps;
 import megalodonte.props.ButtonSize;
 import megalodonte.props.ButtonStyle;
 import megalodonte.props.ButtonVariant;
-import org.kordamp.ikonli.Ikon;
-import org.kordamp.ikonli.javafx.FontIcon;
+import disgust.icons.Icon;
+import megalodonte.base.components.Component;
+
 
 import java.util.Objects;
 
@@ -20,6 +21,29 @@ public final class ButtonsPack {
     private ButtonsPack() {}
 
     private static final double ICON_SIZE = 14;
+
+    public static Button IconButton(Component icon, String accessibleLabel, RunnableThrowing onClick) {
+        Objects.requireNonNull(icon, "icon");
+        return IconButton((size, color) -> icon, accessibleLabel, onClick);
+    }
+
+    /** Icon-only action with a required accessible name. */
+    public static Button IconButton(Icon icon, String accessibleLabel, RunnableThrowing onClick) {
+        Objects.requireNonNull(icon, "icon");
+        if (accessibleLabel == null || accessibleLabel.isBlank()) {
+            throw new IllegalArgumentException("accessibleLabel é obrigatório");
+        }
+        var button = button("", new Props().iconStart(icon).onClick(onClick));
+        var node = (javafx.scene.control.Button) button.getJavaFxNode();
+        node.setAccessibleText(accessibleLabel);
+        node.setContentDisplay(javafx.scene.control.ContentDisplay.GRAPHIC_ONLY);
+        node.setOnMouseClicked(null);
+        node.setOnAction(event -> {
+            try { onClick.run(); }
+            catch (Exception e) { megalodonte.application.ErrorReporter.handle(e); }
+        });
+        return button;
+    }
 
     /**
      * Configuração de um botão do pack — dados puros, sem construir nada.
@@ -30,8 +54,8 @@ public final class ButtonsPack {
         private ButtonStyle style = ButtonStyle.FILLED;
         private ButtonSize size = ButtonSize.MEDIUM;
         private boolean fillWidth;
-        private Ikon iconStart;
-        private Ikon iconEnd;
+        private Icon iconStart;
+        private Icon iconEnd;
         private String href;
         private RunnableThrowing onClick;
 
@@ -46,8 +70,17 @@ public final class ButtonsPack {
         public Props large() { this.size = ButtonSize.LARGE; return this; }
         public Props size(ButtonSize size) { this.size = size; return this; }
         public Props fillWidth() { this.fillWidth = true; return this; }
-        public Props iconStart(Ikon icon) { this.iconStart = icon; return this; }
-        public Props iconEnd(Ikon icon) { this.iconEnd = icon; return this; }
+        public Props iconStart(Icon icon) { this.iconStart = icon; return this; }
+        public Props iconEnd(Icon icon) { this.iconEnd = icon; return this; }
+        /** A component instance belongs to one button; use Icon for a reusable factory. */
+        public Props iconStart(Component icon) {
+            Objects.requireNonNull(icon, "icon");
+            return iconStart((size, color) -> icon);
+        }
+        public Props iconEnd(Component icon) {
+            Objects.requireNonNull(icon, "icon");
+            return iconEnd((size, color) -> icon);
+        }
         public Props href(String href) { this.href = href; return this; }
         public Props onClick(RunnableThrowing onClick) { this.onClick = onClick; return this; }
         public Props style(ButtonStyle style) {this.style = style; return this; }
@@ -84,9 +117,9 @@ public final class ButtonsPack {
 
         // buttonProps.getTextColor() só reflete o valor correto depois que o Button
         // termina de construir (Props.apply roda dentro do super(...)).
-        Ikon icon = props.iconStart != null ? props.iconStart : props.iconEnd;
+        Icon icon = props.iconStart != null ? props.iconStart : props.iconEnd;
         if (icon != null) {
-            btn.icon(IconInterface.of(FontIcon.of(icon, (int) ICON_SIZE, Color.web(buttonProps.getTextColor()))));
+            btn.icon(IconInterface.of(icon.create(ICON_SIZE, Color.web(buttonProps.getTextColor())).getJavaFxNode()));
         }
 
         return btn;
@@ -95,7 +128,7 @@ public final class ButtonsPack {
     // ---- Atalhos finos, mantidos pra compatibilidade com código existente ----
 
     private static Button buildShortcut(String text, ButtonVariant variant, ButtonStyle style,
-                                        boolean fillWidth, Ikon iconStart, Ikon iconEnd,
+                                        boolean fillWidth, Icon iconStart, Icon iconEnd,
                                         String href, RunnableThrowing onClick) {
         var props = new Props().variant(variant).style(style);
         if (fillWidth) props.fillWidth();
@@ -120,19 +153,19 @@ public final class ButtonsPack {
         return buildShortcut(text, variant, ButtonStyle.FILLED, fillWidth, null, null, null, onClick);
     }
 
-    public static Button ContainedButtonWithIconStart(String text, ButtonVariant variant, Ikon icon, RunnableThrowing onClick) {
+    public static Button ContainedButtonWithIconStart(String text, ButtonVariant variant, Icon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.FILLED, false, icon, null, null, onClick);
     }
 
-    public static Button ContainedButtonWithIconStart(String text, ButtonVariant variant, boolean fillWidth, Ikon icon, RunnableThrowing onClick) {
+    public static Button ContainedButtonWithIconStart(String text, ButtonVariant variant, boolean fillWidth, Icon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.FILLED, fillWidth, icon, null, null, onClick);
     }
 
-    public static Button ContainedButtonWithIconEnd(String text, ButtonVariant variant, Ikon icon, RunnableThrowing onClick) {
+    public static Button ContainedButtonWithIconEnd(String text, ButtonVariant variant, Icon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.FILLED, false, null, icon, null, onClick);
     }
 
-    public static Button ContainedButtonWithIconEnd(String text, ButtonVariant variant, boolean fillWidth, Ikon icon, RunnableThrowing onClick) {
+    public static Button ContainedButtonWithIconEnd(String text, ButtonVariant variant, boolean fillWidth, Icon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.FILLED, fillWidth, null, icon, null, onClick);
     }
 
@@ -154,19 +187,19 @@ public final class ButtonsPack {
         return buildShortcut(text, variant, ButtonStyle.OUTLINED, fillWidth, null, null, null, onClick);
     }
 
-    public static Button OutlinedButtonWithIconStart(String text, ButtonVariant variant, Ikon icon, RunnableThrowing onClick) {
+    public static Button OutlinedButtonWithIconStart(String text, ButtonVariant variant, Icon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.OUTLINED, false, icon, null, null, onClick);
     }
 
-    public static Button OutlinedButtonWithIconStart(String text, ButtonVariant variant, boolean fillWidth, Ikon icon, RunnableThrowing onClick) {
+    public static Button OutlinedButtonWithIconStart(String text, ButtonVariant variant, boolean fillWidth, Icon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.OUTLINED, fillWidth, icon, null, null, onClick);
     }
 
-    public static Button OutlinedButtonWithIconEnd(String text, ButtonVariant variant, Ikon icon, RunnableThrowing onClick) {
+    public static Button OutlinedButtonWithIconEnd(String text, ButtonVariant variant, Icon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.OUTLINED, false, null, icon, null, onClick);
     }
 
-    public static Button OutlinedButtonWithIconEnd(String text, ButtonVariant variant, boolean fillWidth, Ikon icon, RunnableThrowing onClick) {
+    public static Button OutlinedButtonWithIconEnd(String text, ButtonVariant variant, boolean fillWidth, Icon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.OUTLINED, fillWidth, null, icon, null, onClick);
     }
 
@@ -188,19 +221,19 @@ public final class ButtonsPack {
         return buildShortcut(text, variant, ButtonStyle.TEXT, fillWidth, null, null, null, onClick);
     }
 
-    public static Button TextButtonWithIconStart(String text, ButtonVariant variant, Ikon icon, RunnableThrowing onClick) {
+    public static Button TextButtonWithIconStart(String text, ButtonVariant variant, Icon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.TEXT, false, icon, null, null, onClick);
     }
 
-    public static Button TextButtonWithIconStart(String text, ButtonVariant variant, boolean fillWidth, Ikon icon, RunnableThrowing onClick) {
+    public static Button TextButtonWithIconStart(String text, ButtonVariant variant, boolean fillWidth, Icon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.TEXT, fillWidth, icon, null, null, onClick);
     }
 
-    public static Button TextButtonWithIconEnd(String text, ButtonVariant variant, Ikon icon, RunnableThrowing onClick) {
+    public static Button TextButtonWithIconEnd(String text, ButtonVariant variant, Icon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.TEXT, false, null, icon, null, onClick);
     }
 
-    public static Button TextButtonWithIconEnd(String text, ButtonVariant variant, boolean fillWidth, Ikon icon, RunnableThrowing onClick) {
+    public static Button TextButtonWithIconEnd(String text, ButtonVariant variant, boolean fillWidth, Icon icon, RunnableThrowing onClick) {
         return buildShortcut(text, variant, ButtonStyle.TEXT, fillWidth, null, icon, null, onClick);
     }
 

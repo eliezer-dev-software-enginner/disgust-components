@@ -30,9 +30,9 @@ import megalodonte.components.v2.Input;
 import megalodonte.props.*;
 import megalodonte.props.v2.InputProps;
 import megalodonte.v2.ListState;
-import org.kordamp.ikonli.Ikon;
-import org.kordamp.ikonli.antdesignicons.AntDesignIconsOutlined;
-import org.kordamp.ikonli.javafx.FontIcon;
+import disgust.icons.Icon;
+import disgust.icons.Feather;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -51,8 +51,8 @@ public final class Pack {
 
     // ---------------- Ícones ----------------
 
-    public static IconInterface ikon(Ikon ikon, double size, String color) {
-        return IconInterface.of(FontIcon.of(ikon, (int) size, Color.web(color)));
+    public static Component icon(Icon icon, double size, String color) {
+        return icon.create(size, Color.web(color));
     }
 
     // ---------------- Texto / exibição ----------------
@@ -210,8 +210,8 @@ public final class Pack {
         ).onClick(onClick);
     }
 
-    public static Component MenuItem(String title, Ikon ikon, String color, Runnable onClick) {
-        var icon = Component.CreateFromJavaFxNode(FontIcon.of(ikon, 25, Color.web(color)));
+    public static Component MenuItem(String title, Icon definition, String color, Runnable onClick) {
+        var icon = definition.create(25, Color.web(color));
 
         return new Clickable(new Card(
                 new Column(new ColumnProps().centerHorizontally())
@@ -437,7 +437,7 @@ public final class Pack {
      * caso contrário usa {@code fixedWidth} (padrão 300 se não informado).
      */
     public static Component searchInput(State<String> stateInput, String placeholder, boolean fillWidth, Integer fixedWidth) {
-        var icon = FontIcon.of(AntDesignIconsOutlined.SEARCH, 20, Color.web(ThemeManager.theme().colors().secondary()));
+        var icon = Feather.SEARCH.create(20, Color.web(ThemeManager.theme().colors().secondary()));
         var props = new InputProps().placeHolder(placeholder).height(31);
 
         if (fillWidth) {
@@ -446,7 +446,7 @@ public final class Pack {
             props.width(fixedWidth != null ? fixedWidth : 300);
         }
 
-        return new Input(stateInput, props).left(icon);
+        return new Input(stateInput, props).left(icon.getJavaFxNode());
     }
 
     public static Component searchInput(State<String> stateInput, String placeholder) {

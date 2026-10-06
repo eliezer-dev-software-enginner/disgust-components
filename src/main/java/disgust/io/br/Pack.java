@@ -10,8 +10,8 @@ import megalodonte.components.layout_components.Column;
 import megalodonte.components.v2.Input;
 import megalodonte.props.TextProps;
 import megalodonte.props.v2.InputProps;
-import org.kordamp.ikonli.entypo.Entypo;
-import org.kordamp.ikonli.javafx.FontIcon;
+import disgust.icons.Feather;
+
 import pack.utilities.FormatterPack;
 
 import java.math.BigDecimal;
@@ -108,10 +108,10 @@ public final class Pack {
     private static final NumberFormat BRL = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
     public static Component InputColumnCurrency(String label, State<String> inputState, boolean disableInput) {
-        var fonticon = FontIcon.of(Entypo.CREDIT, 15, Color.web("green"));
+        var fonticon = Feather.DOLLAR_SIGN.create(15, Color.web("green"));
         var inputProps = getInputProps("R$ 0,00", 140);
         if (disableInput) {
-            fonticon = FontIcon.of(Entypo.BLOCK,13,Color.web("red"));
+            fonticon = Feather.SLASH.create(13,Color.web("red"));
             inputProps.disable();
         }
 
@@ -131,7 +131,7 @@ public final class Pack {
                     return OnChangeResult.of(BRL.format(realValue), numeric);
                 })
                 .lockCursorToEnd()
-                .left(fonticon);
+                .left(fonticon.getJavaFxNode());
 
         return new Column()
                 .c_child(new Text(label, new TextProps().fontSize(ThemeManager.theme().typography().small())))
