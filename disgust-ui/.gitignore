@@ -1,0 +1,6 @@
+
+/.packaging/
+
+/dist/
+
+__pycache__/
