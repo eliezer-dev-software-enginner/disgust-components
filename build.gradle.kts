@@ -1,7 +1,6 @@
 plugins {
     id("java-library")
     id("maven-publish")
-    id("org.gradlex.extra-java-module-info") version "1.14.2"
 
     // 🛑 CORREÇÃO: Usando o ID e a versão CORRETOS conforme a documentação oficial.
     id("org.openjfx.javafxplugin") version "0.1.0"
@@ -11,9 +10,8 @@ group = "disgust"
 version = "1.0.0-beta"
 
 repositories {
-    mavenCentral()
     mavenLocal()
-    maven { url = uri("https://jitpack.io") }
+    mavenCentral()
 }
 
 java {
@@ -56,7 +54,7 @@ dependencies {
     implementation("megalodonte:megalodonte-router:1.0.0-beta")
 
     //utilitties
-    implementation("com.github.eliezer-dev-software-enginner:pack-utilities:v1.0.0")
+    implementation("pack.utilities:pack-utilities:1.0.0")
 
     api(project(":disgust-icons"))
 }
@@ -96,11 +94,4 @@ publishing {
             artifactId = "distust-io-components"
         }
     }
-}
-
-// The published utilities JAR lacks module metadata and its v1.0.0 filename
-// cannot yield a valid automatic module name.
-extraJavaModuleInfo {
-    failOnMissingModuleInfo.set(false)
-    automaticModule("com.github.eliezer-dev-software-enginner:pack-utilities", "pack.utilities")
 }
