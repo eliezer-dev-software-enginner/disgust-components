@@ -2,6 +2,7 @@ package disgust.ui;
 
 import disgust.icons.Feather;
 import disgust.io.ButtonsPack;
+import disgust.io.Material;
 import disgust.io.Pack;
 import disgust.io.Tooltip;
 import megalodonte.base.components.Component;
@@ -32,7 +33,8 @@ public final class ShowcaseScreen implements ScreenComponent {
         ICONS("Ícones Feather", Feather.GRID),
         FORMS("Campos de formulário", Feather.EDIT_3),
         BRAZIL("Máscaras brasileiras", Feather.DOLLAR_SIGN),
-        COMPOSITION("Texto & composição", Feather.LAYERS);
+        COMPOSITION("Texto & composição", Feather.LAYERS),
+        MATERIAL("Material", Feather.SQUARE);
 
         final String title;
         final Feather icon;
@@ -88,6 +90,7 @@ public final class ShowcaseScreen implements ScreenComponent {
             case FORMS -> forms();
             case BRAZIL -> brazil();
             case COMPOSITION -> composition();
+            case MATERIAL -> material();
         };
         return Pack.ScrollPaneDefault(new Column(new ColumnProps().spacingOf(20).paddingAll(8))
                 .c_child(label(section.title, 26, "#0f172a"))
@@ -237,6 +240,37 @@ public final class ShowcaseScreen implements ScreenComponent {
                                 .r_child(metric("Ícones", "286 Feather", Feather.GRID))))
                 .c_child(example("Ação principal", "Um exemplo de ação com feedback local.",
                         Pack.PrimaryActionButton("Experimentar ação", () -> feedback.set("Ação principal acionada."))));
+    }
+
+    private Component material() {
+        var notifications = State.of(false);
+        var volume = State.of(35.0);
+        var expanded = State.of(false);
+        var tab = State.of(0);
+        var snackbar = State.of(false);
+        return new Column(new ColumnProps().spacingOf(20))
+                .c_child(example("Feedback", "Alertas, chips, badge e snackbar controlado por estado.",
+                        new Column(new ColumnProps().spacingOf(12))
+                                .c_child(Material.alert(Material.Severity.INFO, "Uma mensagem informativa"))
+                                .c_child(Material.alert(Material.Severity.SUCCESS, "Operação concluída"))
+                                .c_child(row().r_child(Material.chip("Pronto", Material.Severity.SUCCESS))
+                                        .r_child(Material.badge(Feather.BELL.create(28, "#2563eb"), 3)))
+                                .c_child(Material.snackbar(
+                                        ButtonsPack.ContainedButton("Mostrar mensagem", new ButtonsPack.Props()
+                                                .onClick(() -> snackbar.set(!snackbar.get()))),
+                                        snackbar, Material.Severity.INFO, "Mensagem de demonstração"))))
+                .c_child(example("Entradas", "Switch e slider sincronizados com State.",
+                        row().r_child(Material.switchControl("Notificações", notifications))
+                                .r_child(Material.slider(0, 100, volume))))
+                .c_child(example("Navegação e superfícies", "Accordion, tabs, avatar e divisória.",
+                        new Column(new ColumnProps().spacingOf(12))
+                                .c_child(Material.avatar("DG"))
+                                .c_child(Material.breadcrumbs(List.of("Início", "Componentes", "Material")))
+                                .c_child(Material.divider())
+                                .c_child(Material.accordion("Detalhes", label("Conteúdo expansível", 14, "#334155"), expanded))
+                                .c_child(Material.tabs(List.of(
+                                        new megalodonte.components.Tabs.Page("Primeira", label("Aba um", 14, "#334155")),
+                                        new megalodonte.components.Tabs.Page("Segunda", label("Aba dois", 14, "#334155"))), tab))));
     }
 
     private Component metric(String title, String value, Feather icon) {

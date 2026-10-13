@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import megalodonte.base.components.Component;
 import megalodonte.base.theme.ThemeManager;
+import megalodonte.base.state.State;
 import megalodonte.props.ButtonVariant;
 import megalodonte.theme.DefaultTheme;
 import org.junit.jupiter.api.BeforeAll;
@@ -149,6 +150,42 @@ class IconsAndTooltipTest {
             try (var third = new Tooltip("Terceiro", child)) {
                 assertSame(child.getJavaFxNode(), third.getJavaFxNode());
             }
+        });
+    }
+
+    @Test
+    void materialCompositionsUseNativeFrameworkComponents() throws Exception {
+        onFx(() -> {
+            var content = new megalodonte.components.Text("Content");
+            assertInstanceOf(megalodonte.components.Card.class,
+                    Material.alert(Material.Severity.SUCCESS, "Saved"));
+            assertInstanceOf(megalodonte.components.Card.class,
+                    Material.chip("Ready", Material.Severity.INFO));
+            assertInstanceOf(megalodonte.components.layout_components.Stack.class,
+                    Material.badge(content, 3));
+            assertInstanceOf(megalodonte.components.Card.class, Material.avatar("AB"));
+            assertInstanceOf(megalodonte.components.layout_components.Row.class,
+                    Material.breadcrumbs(java.util.List.of("Home", "Settings")));
+            assertInstanceOf(megalodonte.components.LineHorizontal.class, Material.divider());
+            assertInstanceOf(megalodonte.components.Card.class,
+                    Material.paper(new megalodonte.components.Text("Paper")));
+            assertInstanceOf(megalodonte.components.Modal.class,
+                    Material.dialog(State.of(false), new megalodonte.components.Text("Dialog")));
+            assertInstanceOf(megalodonte.components.layout_components.Stack.class,
+                    Material.snackbar(new megalodonte.components.Text("Screen"), State.of(true),
+                            Material.Severity.INFO, "Saved"));
+            assertInstanceOf(megalodonte.components.Switch.class,
+                    Material.switchControl("Notifications", State.of(false)));
+            assertInstanceOf(megalodonte.components.Slider.class,
+                    Material.slider(0, 10, State.of(5.0)));
+            assertInstanceOf(megalodonte.components.Accordion.class,
+                    Material.accordion("Details", new megalodonte.components.Text("Body"), State.of(false)));
+            assertInstanceOf(megalodonte.components.Tabs.class,
+                    Material.tabs(java.util.List.of(new megalodonte.components.Tabs.Page(
+                            "Home", new megalodonte.components.Text("Home"))), State.of(0)));
+            assertThrows(IllegalArgumentException.class,
+                    () -> Material.alert(Material.Severity.ERROR, ""));
+            assertThrows(IllegalArgumentException.class, () -> Material.avatar(""));
         });
     }
 }

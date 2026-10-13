@@ -3,6 +3,10 @@
 Biblioteca de composição para **Megalodonte**, com Java 25 e JavaFX 25.0.1.
 Configure o tema Megalodonte antes de construir os componentes.
 
+O [catálogo Material](docs/MATERIAL_COMPONENTS.md) reúne as composições nativas
+inspiradas nos principais controles da MUI. Elas usam componentes Megalodonte e
+não carregam navegador ou WebView.
+
 ## Organização dos ícones
 
 `disgust-icons` é um subprojeto Gradle e um módulo Java (`disgust.icons`) separado,
