@@ -11,6 +11,7 @@ import megalodonte.components.Card;
 import megalodonte.components.LineHorizontal;
 import megalodonte.components.Modal;
 import megalodonte.components.ProgressBar;
+import megalodonte.components.RadioGroup;
 import megalodonte.components.Slider;
 import megalodonte.components.Switch;
 import megalodonte.components.Tabs;
@@ -140,6 +141,12 @@ public final class Material {
 
     public static Slider slider(double min, double max, State<Double> value) {
         return new Slider(min, max, value);
+    }
+
+    /** Mutually exclusive, accessible choices bound to a value state. */
+    public static RadioGroup radioGroup(String accessibleLabel, List<RadioGroup.Option> options,
+                                        State<String> selected) {
+        return new RadioGroup(accessibleLabel, options, selected);
     }
 
     public static ProgressBar progress(State<Integer> percent) {
