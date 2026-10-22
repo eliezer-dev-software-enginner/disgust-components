@@ -156,11 +156,21 @@ function renderShortcuts(data) {
     return `<h2>Atalhos estáticos</h2>${items}`;
 }
 
-function onCopyClick(e) {
-    const code = e.target.nextElementSibling.textContent;
-    navigator.clipboard.writeText(code);
-    e.target.textContent = "Copiado!";
-    setTimeout(() => (e.target.textContent = "Copiar"), 1500);
+async function onCopyClick(e) {
+    const button = e.currentTarget;
+    const code = button.nextElementSibling.textContent;
+    button.disabled = true;
+    try {
+        await navigator.clipboard.writeText(code);
+        button.textContent = "Copiado!";
+    } catch {
+        button.textContent = "Não foi possível copiar";
+    } finally {
+        setTimeout(() => {
+            button.textContent = "Copiar";
+            button.disabled = false;
+        }, 1500);
+    }
 }
 
 function escapeHtml(str) {
