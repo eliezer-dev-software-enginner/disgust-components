@@ -102,6 +102,13 @@ preservar suas coordenadas de publicação.
 
 ## Build e publicação local
 
+O build usa o Gradle Wrapper (Gradle 9.2.0) e requer um JDK 25 disponível
+para o toolchain. As dependências `megalodonte:*:1.0.0-beta` e
+`pack.utilities:pack-utilities:1.0.0` precisam estar disponíveis nos
+repositórios configurados (`mavenLocal()` ou Maven Central). Se esses
+artefatos não estiverem acessíveis, os comandos abaixo não concluem o build.
+O repositório não inclui o código dessas dependências.
+
 ### Mostruário `disgust-ui`
 
 Aplicação Megalodonte local para experimentar botões, Tooltip/IconButton, o catálogo
@@ -113,6 +120,8 @@ As ações geram apenas feedback local; não usam banco de dados ou serviços ex
 ./gradlew.bat :disgust-ui:build
 ./gradlew.bat :disgust-ui:test
 ```
+
+No Linux, substitua `./gradlew.bat` por `./gradlew` nos comandos Gradle.
 
 O módulo é **opcional**: `build`, `test` e `publishToMavenLocal` normais incluem
 somente as bibliotecas. `disgust-ui` só entra nas configurações quando uma tarefa
@@ -138,14 +147,17 @@ Os testes verificam todo o catálogo Feather, a fonte incorporada, criação de
 instâncias independentes, integração dos botões, acessibilidade/ação do IconButton
 e configuração, atualização, substituição e descarte de Tooltip.
 
-O build atribui o nome automático `pack.utilities` ao JAR legado de utilidades
-usando [GradleX Extra Java Module Info](https://github.com/gradlex-org/extra-java-module-info).
-Consumidores JPMS precisam dessa mesma configuração enquanto o pacote original
-não publicar metadados de módulo válidos.
+O módulo `disgust.components` declara `requires pack.utilities` em seu
+`module-info.java`. Ao usar JPMS, o JAR de `pack-utilities` precisa expor esse
+nome de módulo; o build deste repositório não configura uma transformação
+de metadados para ele.
 
 ## Licença
 
-Disgust: MIT. A fonte Feather é MIT, e o mapeamento adaptado do Ikonli é Apache-2.0.
-As licenças e atribuições estão incluídas em `META-INF` no JAR `disgust-icons`.
+O README declara Disgust como MIT, mas este repositório não contém um arquivo
+de licença próprio; os termos do projeto precisam ser confirmados pelo
+mantenedor. A fonte Feather é MIT, e o mapeamento adaptado do Ikonli é
+Apache-2.0. As licenças e atribuições desses recursos estão incluídas em
+`META-INF` no JAR `disgust-icons`.
 
 Desenvolvido por **Eliezer**.
