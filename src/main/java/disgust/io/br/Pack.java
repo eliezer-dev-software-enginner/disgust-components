@@ -7,9 +7,9 @@ import megalodonte.base.theme.ThemeManager;
 import megalodonte.components.Text;
 import megalodonte.components.inputs.OnChangeResult;
 import megalodonte.components.layout_components.Column;
-import megalodonte.components.v2.Input;
+import megalodonte.components.inputs.Input;
 import megalodonte.props.TextProps;
-import megalodonte.props.v2.InputProps;
+import megalodonte.props.InputProps;
 import disgust.icons.Feather;
 
 import pack.utilities.FormatterPack;
@@ -28,17 +28,12 @@ public final class Pack {
 
     private Pack() {}
 
-    @Deprecated(forRemoval = true)
-    private static InputProps getInputPropsV2(String placeholder, int width) {
-        return disgust.io.Pack.getInputPropsV2(placeholder).width(width);
-    }
-
     private static megalodonte.props.InputProps getInputProps(String placeholder, int width) {
         return disgust.io.Pack.getInputProps(placeholder).width(width);
     }
 
     public static Component InputColumnCep(String label, State<String> inputState) {
-        var inputProps = getInputPropsV2("00000-000", 120);
+        var inputProps = getInputProps("00000-000", 120);
 
         var input = new Input(inputState, inputProps)
                 .onInitialize(value -> OnChangeResult.of(FormatterPack.formatCep(value), value))
@@ -55,7 +50,7 @@ public final class Pack {
     }
 
     public static Component InputColumnCpf(String label, State<String> inputState) {
-        var inputProps = getInputPropsV2("000.000.000-00", 160);
+        var inputProps = getInputProps("000.000.000-00", 160);
 
         var input = new Input(inputState, inputProps)
                 .onInitialize(value -> OnChangeResult.of(FormatterPack.formatCpf(value), value))
@@ -72,7 +67,7 @@ public final class Pack {
     }
 
     public static Component InputColumnCnpjAlfanumerico(String label, State<String> inputState) {
-        var inputProps = getInputPropsV2("AA.AAA.AAA/AAAA-DD", 190);
+        var inputProps = getInputProps("AA.AAA.AAA/AAAA-DD", 190);
 
         var input = new Input(inputState, inputProps)
                 .onInitialize(value -> OnChangeResult.of(FormatterPack.formatCnpj(value), value))
@@ -89,7 +84,7 @@ public final class Pack {
     }
 
     public static Component InputColumnPhone(String label, State<String> inputState) {
-        var inputProps = getInputPropsV2("(00) 00000-0000", 160);
+        var inputProps = getInputProps("(00) 00000-0000", 160);
 
         var input = new Input(inputState, inputProps)
                 .onInitialize(value -> OnChangeResult.of(FormatterPack.formatPhone(value), value))

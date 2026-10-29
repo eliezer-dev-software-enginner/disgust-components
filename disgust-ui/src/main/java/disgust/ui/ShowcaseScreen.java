@@ -14,9 +14,9 @@ import megalodonte.components.TextFlow;
 import megalodonte.components.inputs.OnChangeResult;
 import megalodonte.components.layout_components.Column;
 import megalodonte.components.layout_components.Row;
-import megalodonte.components.v2.Input;
+import megalodonte.components.inputs.Input;
 import megalodonte.props.*;
-import megalodonte.props.v2.InputProps;
+import megalodonte.props.InputProps;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

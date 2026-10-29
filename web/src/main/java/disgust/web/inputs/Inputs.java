@@ -56,8 +56,8 @@ public final class Inputs {
                 .value(Objects.requireNonNull(selected, "selected"));
     }
 
-    public static megalodonte.components.v2.Input textField(State<String> value) {
-        return new megalodonte.components.v2.Input(Objects.requireNonNull(value, "value"));
+    public static megalodonte.components.inputs.Input textField(State<String> value) {
+        return new megalodonte.components.inputs.Input(Objects.requireNonNull(value, "value"));
     }
 
     public static TextAreaInput textArea(State<String> value) {

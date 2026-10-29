@@ -26,9 +26,9 @@ import megalodonte.components.inputs.TextAreaInput;
 import megalodonte.components.layout_components.Column;
 import megalodonte.components.layout_components.Container;
 import megalodonte.components.layout_components.Row;
-import megalodonte.components.v2.Input;
+import megalodonte.components.inputs.Input;
 import megalodonte.props.*;
-import megalodonte.props.v2.InputProps;
+import megalodonte.props.InputProps;
 import megalodonte.v2.ListState;
 import disgust.icons.Icon;
 import disgust.icons.Feather;
@@ -303,20 +303,14 @@ public final class Pack {
     }
 
     // ---------------- Input genérico ----------------
-@Deprecated(forRemoval = true)
-    public static InputProps getInputPropsV2(String placeholder) {
+    public static InputProps getInputProps(String placeholder) {
         return new InputProps()
                 .placeHolder(placeholder).fontSize(ThemeManager.theme().typography().small());
     }
 
 
-    public static megalodonte.props.InputProps getInputProps(String placeholder) {
-        return new megalodonte.props.InputProps()
-                .placeHolder(placeholder).fontSize(ThemeManager.theme().typography().small());
-    }
-
     public static Component InputColumnNumeric(String label, State<String> inputState, String placeholder) {
-        var inputProps = getInputPropsV2(placeholder).width(100);
+        var inputProps = getInputProps(placeholder).width(100);
 
         var input = new Input(inputState, inputProps)
                 .onChange(value -> {
@@ -338,7 +332,7 @@ public final class Pack {
     public static Component InputColumnComEnterHandler(String label, ReadableState<String> inputState, String placeholder,
                                                        Runnable onEnter, Ref<Input> ref) {
         var input = new Input((State<String>) inputState,
-                getInputPropsV2(placeholder).width(100).borderWidth(ThemeManager.theme().border().width())
+                getInputProps(placeholder).width(100).borderWidth(ThemeManager.theme().border().width())
                         .borderColor(ThemeManager.theme().colors().border()).borderRadius(ThemeManager.theme().border().radiusMd())
         ).onEnter(onEnter);
         if (ref != null) input.ref(ref);
@@ -397,7 +391,7 @@ public final class Pack {
     }
 
     public static Column InputColumnAuthFill(String label, ReadableState<String> inputState, String placeholder) {
-        var props = getInputPropsV2(placeholder);
+        var props = getInputProps(placeholder);
         props.height(35);
 
         TextProps labelProps = new TextProps().fontSize(ThemeManager.theme().typography().body());
