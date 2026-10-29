@@ -66,6 +66,28 @@ public final class Pack {
                 .c_child(input);
     }
 
+    /** Accepts CPF (11 digits) or alphanumeric CNPJ (14 characters) in one field. */
+    public static Component InputColumnCpfCnpj(String label, State<String> inputState) {
+        var input = new Input(inputState, getInputProps("CPF ou CNPJ", 190))
+                .onInitialize(value -> {
+                    String raw = value == null ? "" : value.toUpperCase().replaceAll("[^0-9A-Z]", "");
+                    return OnChangeResult.of(formatCpfCnpj(raw), raw);
+                })
+                .onChange(value -> {
+                    String raw = value.toUpperCase().replaceAll("[^0-9A-Z]", "");
+                    if (raw.length() > 14) raw = raw.substring(0, 14);
+                    return OnChangeResult.of(formatCpfCnpj(raw), raw);
+                })
+                .lockCursorToEnd();
+        return new Column()
+                .c_child(new Text(label, new TextProps().fontSize(ThemeManager.theme().typography().small())))
+                .c_child(input);
+    }
+
+    private static String formatCpfCnpj(String raw) {
+        return FormatterPack.formatCpfCnpj(raw);
+    }
+
     public static Component InputColumnCnpjAlfanumerico(String label, State<String> inputState) {
         var inputProps = getInputProps("AA.AAA.AAA/AAAA-DD", 190);
 

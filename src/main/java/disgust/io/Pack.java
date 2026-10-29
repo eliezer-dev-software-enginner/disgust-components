@@ -325,6 +325,46 @@ public final class Pack {
                 .c_child(input);
     }
 
+    /** Decimal entry stored with a dot separator, suitable for BigDecimal models. */
+    public static Component InputColumnDecimal(String label, State<String> inputState, String placeholder) {
+        var input = new Input(inputState, getInputProps(placeholder).width(140))
+                .onInitialize(value -> OnChangeResult.of(DecimalInputFormat.display(value), value == null ? "" : value))
+                .onChange(value -> {
+                    String normalized = DecimalInputFormat.normalize(value);
+                    return OnChangeResult.of(DecimalInputFormat.display(normalized), normalized);
+                })
+                .lockCursorToEnd();
+        return new Column()
+                .c_child(new Text(label, new TextProps().fontSize(ThemeManager.theme().typography().small())))
+                .c_child(input);
+    }
+
+    /** Two decimal places while typing: 333 displays 3,33 and stores 3.33. */
+    public static Component InputColumnDecimalFixedTwo(String label, State<String> inputState, String placeholder) {
+        return inputColumnDecimalFixedScale(label, inputState, placeholder, 2);
+    }
+
+    /** Three decimal places for measurements in metres: 2130 displays 2,130. */
+    public static Component InputColumnDecimalFixedThree(String label, State<String> inputState, String placeholder) {
+        return inputColumnDecimalFixedScale(label, inputState, placeholder, 3);
+    }
+
+    private static Component inputColumnDecimalFixedScale(String label, State<String> inputState, String placeholder, int scale) {
+        var input = new Input(inputState, getInputProps(placeholder).width(140))
+                .onInitialize(value -> {
+                    String stored = DecimalInputFormat.fixedScaleFromStored(value, scale);
+                    return OnChangeResult.of(DecimalInputFormat.display(stored), stored);
+                })
+                .onChange(value -> {
+                    String stored = DecimalInputFormat.fixedScaleFromInput(value, scale);
+                    return OnChangeResult.of(DecimalInputFormat.display(stored), stored);
+                })
+                .lockCursorToEnd();
+        return new Column()
+                .c_child(new Text(label, new TextProps().fontSize(ThemeManager.theme().typography().small())))
+                .c_child(input);
+    }
+
     public static Component InputColumnComEnterHandler(String label, ReadableState<String> inputState, String placeholder, Runnable onEnter) {
         return InputColumnComEnterHandler(label, inputState, placeholder, onEnter, null);
     }
