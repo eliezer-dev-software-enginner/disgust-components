@@ -28,7 +28,7 @@ public final class Pack {
 
     private Pack() {}
 
-    private static megalodonte.props.InputProps getInputProps(String placeholder, int width) {
+    private static InputProps getInputProps(String placeholder, int width) {
         return disgust.io.Pack.getInputProps(placeholder).width(width);
     }
 
@@ -133,7 +133,7 @@ public final class Pack {
         }
 
         // inputState armazena valores brutos (em centavos), campo exibe formato BRL
-        var input = new megalodonte.components.inputs.Input(inputState, inputProps)
+        var input = new Input(inputState, inputProps)
                 .onInitialize(value -> {
                     if (value.matches("\\d+")) {
                         BigDecimal realValue = new BigDecimal(value).movePointLeft(2);
