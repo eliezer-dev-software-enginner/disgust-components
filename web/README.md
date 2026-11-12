@@ -1,38 +1,45 @@
-# Catálogo visual do Disgust
+# Disgust visual catalog
 
-Esta pasta é a documentação estática dos componentes Java nativos do Disgust.
-Ela mostra a API disponível e uma aproximação visual do que o usuário enxerga
-quando esses componentes são renderizados em aplicações desktop Megalodonte.
+This directory contains the static documentation for the native Java components
+provided by Disgust. It describes the available API and approximates what users
+see when those components are rendered in Megalodonte desktop applications.
 
-O conteúdo daqui **não é uma biblioteca web**:
+This content **is not a web component library**:
 
-- não há componentes para navegador, React ou JavaScript;
-- não há módulo Gradle `:web` nem artefato Maven `disgust-web`;
-- `index.html`, `index.js` e `style.css` servem apenas ao catálogo;
-- os arquivos em `jsons/` documentam as classes Java reais;
-- as prévias HTML são ilustrações e não definem o comportamento ou a aparência
-  final dos controles nativos.
+- it does not provide browser, React, or JavaScript components;
+- it is not a `:web` Gradle module and does not publish a `disgust-web` artifact;
+- `index.html`, `index.js`, and `style.css` only implement the documentation viewer;
+- files under `jsons/` document the real Java classes;
+- HTML previews are illustrations and do not define the final behavior or
+  appearance of native controls.
 
-A fonte de verdade de cada componente é sua implementação Java em `src/main` e,
-quando o controle pertence ao framework, em `megalodonte-components`. O catálogo
-deve usar os nomes, tipos, restrições e exemplos dessas APIs, sem criar uma
-segunda hierarquia de componentes.
+The source of truth for each component is its Java implementation under
+`src/main` or, when the control belongs to the framework,
+`megalodonte-components`. The catalog must use the names, types, constraints,
+and examples from those APIs rather than creating a second component hierarchy.
 
-## Visualização local
+## Local preview
 
-Como o catálogo carrega os JSONs com `fetch`, abra-o por um servidor HTTP local:
+The catalog loads JSON files with `fetch`, so serve it through a local HTTP
+server:
 
 ```bash
 python3 -m http.server 8000 --directory web
 ```
 
-Depois acesse `http://localhost:8000`. Esse servidor é apenas uma forma de ler a
-documentação; ele não participa da execução das aplicações Java.
+Then open `http://localhost:8000`. This server only displays the documentation;
+it is not involved when Java applications run.
 
-## Como documentar um componente
+## Documenting a component
 
-1. Implemente ou altere primeiro o componente Java nativo.
-2. Atualize o JSON correspondente com o pacote, propriedades e exemplos reais.
-3. Use a prévia somente para comunicar a aparência observada na aplicação.
-4. Deixe explícitas diferenças que dependam do tema, JavaFX ou sistema operacional.
-5. Não adicione fachadas Java sob um pacote `disgust.web`.
+1. Implement or change the native Java component first.
+2. Update its JSON file with the real package, properties, and examples.
+3. Use the preview only to communicate the appearance observed in the application.
+4. State any differences that depend on the theme, JavaFX, or operating system.
+5. Do not add Java facades under a `disgust.web` package.
+
+## Brand assets
+
+`favicon-source.png` is the high-resolution source of the simplified mark.
+`favicon.png` is the 64 px browser asset, while `favicon.ico` contains 16, 32,
+48, and 64 px variants. Keep these files aligned when the brand changes.

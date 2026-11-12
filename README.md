@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/images/disgust-logo.png" width="220" alt="Disgust Components lowercase d logo">
+</p>
+
 # Disgust Components
 
 Composition library for **Megalodonte**, built with Java 25 and JavaFX 25.0.1.
