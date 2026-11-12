@@ -61,6 +61,29 @@ botão; uma fábrica `Icon` pode ser compartilhada. Componentes personalizados
 preservam sua própria aparência; fábricas podem aplicar o tamanho/cor recebidos.
 Feather aplica ambos automaticamente.
 
+## Inputs nativos
+
+`InputsPack` reúne os controles de entrada usados por aplicações Disgust sem
+criar uma hierarquia visual própria. Os métodos retornam componentes Megalodonte
+nativos, vinculados a `State` e renderizados por JavaFX.
+
+```java
+var name = State.of("");
+var category = State.of("Produto acabado");
+var notifications = State.of(true);
+
+var nameInput = InputsPack.text(name,
+        new InputProps().placeHolder("Digite seu nome").fillWidth());
+var categorySelect = InputsPack.select(
+        List.of("Matéria-prima", "Produto acabado", "Serviço"), category);
+var notificationsInput = InputsPack.checkbox(
+        "Receber notificações", notifications);
+```
+
+Também estão disponíveis `password`, `textArea`, `date`, `switchControl`,
+`radioGroup`, `option` e `slider`. O [catálogo visual](web/) mostra todos os
+controles e exemplos copiáveis da API Java.
+
 ## Tooltip e IconButton
 
 ```java

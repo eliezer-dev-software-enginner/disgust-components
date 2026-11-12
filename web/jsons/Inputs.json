@@ -1,0 +1,83 @@
+{
+  "component": "Inputs",
+  "package": "disgust.io.InputsPack",
+  "description": "Mostruário dos controles de entrada Java nativos expostos por InputsPack. As prévias aproximam a aparência; os exemplos mostram a API Disgust real e o vínculo com State.",
+  "props": {
+    "state": {
+      "type": "State<T>",
+      "required": true,
+      "description": "Estado reativo vinculado ao valor do controle. O tipo depende do componente."
+    },
+    "props": {
+      "type": "InputProps | Props específico",
+      "required": false,
+      "description": "Aparência, dimensões, placeholder e comportamento configuráveis pelo componente."
+    },
+    "accessibleLabel": {
+      "type": "String",
+      "required": false,
+      "description": "Nome acessível obrigatório em controles sem rótulo visual, como Switch e RadioGroup."
+    }
+  },
+  "constraints": [
+    "A fonte de verdade é o componente Java nativo; a prévia HTML é somente documental",
+    "Crie e manipule componentes JavaFX na thread de interface",
+    "Configure ThemeManager antes de construir os controles",
+    "Switch exige um nome acessível não vazio",
+    "RadioGroup exige ao menos uma opção e valores únicos",
+    "Slider exige limites finitos e crescentes"
+  ],
+  "examples": [
+    {
+      "title": "Texto e senha",
+      "description": "Campos de uma linha ligados a State<String>. PasswordInput inclui alternância de visibilidade.",
+      "preview": [
+        { "control": "text", "label": "Nome", "placeholder": "Digite seu nome", "value": "Maria" },
+        { "control": "password", "label": "Senha", "placeholder": "Digite sua senha", "value": "segredo" }
+      ],
+      "code": "var name = State.of(\"\");\nvar password = State.of(\"\");\n\nvar nameInput = InputsPack.text(name,\n        new InputProps().placeHolder(\"Digite seu nome\").fillWidth());\nvar passwordInput = InputsPack.password(password,\n        new InputProps().placeHolder(\"Digite sua senha\").fillWidth());"
+    },
+    {
+      "title": "Texto longo",
+      "description": "TextAreaInput aceita várias linhas e mantém o conteúdo sincronizado com o estado.",
+      "preview": [
+        { "control": "textarea", "label": "Observações", "placeholder": "Informações adicionais", "value": "Entregar no período da manhã.", "wide": true }
+      ],
+      "code": "var notes = State.of(\"\");\nvar notesInput = InputsPack.textArea(notes,\n        new InputProps().placeHolder(\"Informações adicionais\")\n                .fillWidth().minHeight(90).maxHeight(220));"
+    },
+    {
+      "title": "Seleção e data",
+      "description": "Select preserva o objeto selecionado; DatePicker trabalha diretamente com LocalDate.",
+      "preview": [
+        { "control": "select", "label": "Categoria", "options": ["Matéria-prima", "Produto acabado", "Serviço"], "value": "Produto acabado" },
+        { "control": "date", "label": "Data de entrega", "value": "2026-11-12" }
+      ],
+      "code": "var category = State.of(\"Produto acabado\");\nvar deliveryDate = State.of(LocalDate.now());\n\nvar categorySelect = InputsPack.select(\n        List.of(\"Matéria-prima\", \"Produto acabado\", \"Serviço\"), category);\nvar deliveryDatePicker = InputsPack.date(deliveryDate);"
+    },
+    {
+      "title": "Opções booleanas",
+      "description": "Checkbox mostra um rótulo; Switch usa um nome acessível e representa uma escolha ligada/desligada.",
+      "preview": [
+        { "control": "checkbox", "label": "Receber notificações", "checked": true },
+        { "control": "switch", "label": "Modo automático", "checked": true }
+      ],
+      "code": "var notifications = State.of(true);\nvar automatic = State.of(true);\n\nvar checkbox = InputsPack.checkbox(\"Receber notificações\", notifications);\nvar toggle = InputsPack.switchControl(\"Ativar modo automático\", automatic);"
+    },
+    {
+      "title": "Escolha única",
+      "description": "RadioGroup associa valores estáveis aos rótulos apresentados ao usuário.",
+      "preview": [
+        { "control": "radio", "label": "Formato do relatório", "options": ["PDF", "Planilha", "Texto"] }
+      ],
+      "code": "var format = State.of(\"pdf\");\nvar formats = InputsPack.radioGroup(\"Formato do relatório\", List.of(\n        InputsPack.option(\"pdf\", \"PDF\"),\n        InputsPack.option(\"sheet\", \"Planilha\"),\n        InputsPack.option(\"text\", \"Texto\")\n), format);"
+    },
+    {
+      "title": "Intervalo numérico",
+      "description": "Slider limita o valor ao intervalo configurado e o sincroniza com State<Double>.",
+      "preview": [
+        { "control": "range", "label": "Volume", "min": 0, "max": 100, "value": 65 }
+      ],
+      "code": "var volume = State.of(65.0);\nvar volumeSlider = InputsPack.slider(0, 100, volume);"
+    }
+  ]
+}

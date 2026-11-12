@@ -1,6 +1,6 @@
 // Lista de arquivos JSON documentados — adicione aqui conforme novos packs
 // (InputsPack.json, etc.) forem gerados dentro de jsons/.
-const COMPONENT_FILES = ["ButtonsPack.json"];
+const COMPONENT_FILES = ["ButtonsPack.json", "Inputs.json"];
 
 const nav = document.getElementById("nav");
 const content = document.getElementById("content");
@@ -61,8 +61,48 @@ function renderExamples(data) {
 }
 
 function renderPreview(items, palette) {
-    const buttons = items.map(item => renderPreviewButton(item, palette)).join("");
-    return `<div class="preview-box">${buttons}</div>`;
+    const controls = items.map(item => item.control
+        ? renderPreviewInput(item)
+        : renderPreviewButton(item, palette)).join("");
+    return `<div class="preview-box">${controls}</div>`;
+}
+
+function renderPreviewInput(item) {
+    const id = `preview-${item.control}-${item.label || item.placeholder || "field"}`
+        .toLowerCase().replace(/[^a-z0-9-]+/g, "-");
+    const label = item.label ? `<label for="${id}">${item.label}</label>` : "";
+    const value = escapeAttribute(item.value || "");
+    const placeholder = escapeAttribute(item.placeholder || "");
+
+    let control;
+    switch (item.control) {
+        case "password":
+            control = `<input id="${id}" type="password" value="${value}" placeholder="${placeholder}">`;
+            break;
+        case "textarea":
+            control = `<textarea id="${id}" placeholder="${placeholder}" rows="4">${escapeHtml(item.value || "")}</textarea>`;
+            break;
+        case "select":
+            control = `<select id="${id}">${(item.options || []).map(option =>
+                `<option${option === item.value ? " selected" : ""}>${escapeHtml(option)}</option>`).join("")}</select>`;
+            break;
+        case "checkbox":
+            return `<label class="preview-check"><input type="checkbox" ${item.checked ? "checked" : ""}> ${escapeHtml(item.label)}</label>`;
+        case "switch":
+            return `<label class="preview-switch"><input type="checkbox" ${item.checked ? "checked" : ""}><span></span>${escapeHtml(item.label)}</label>`;
+        case "radio":
+            return `<fieldset class="preview-radio"><legend>${escapeHtml(item.label)}</legend>${(item.options || []).map((option, index) =>
+                `<label><input type="radio" name="${id}" ${index === 0 ? "checked" : ""}> ${escapeHtml(option)}</label>`).join("")}</fieldset>`;
+        case "range":
+            control = `<input id="${id}" type="range" min="${item.min}" max="${item.max}" value="${item.value}">`;
+            break;
+        case "date":
+            control = `<input id="${id}" type="date" value="${value}">`;
+            break;
+        default:
+            control = `<input id="${id}" type="text" value="${value}" placeholder="${placeholder}">`;
+    }
+    return `<div class="preview-field ${item.wide ? "preview-field-wide" : ""}">${label}${control}</div>`;
 }
 
 function renderPreviewButton(item, palette) {
@@ -101,9 +141,32 @@ function codeBlock(code) {
     return `
         <div class="code-block">
             <button class="copy-btn">Copiar</button>
-            <pre>${escapeHtml(code)}</pre>
+            <pre><code class="language-java">${highlightJava(code)}</code></pre>
         </div>
     `;
+}
+
+function highlightJava(code) {
+    const tokens = [];
+    const protectedCode = String(code).replace(
+        /(\/\/[^\n]*|\/\*[\s\S]*?\*\/|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g,
+        token => {
+            const kind = token.startsWith("//") || token.startsWith("/*") ? "comment" : "string";
+            tokens.push(`<span class="token-${kind}">${escapeHtml(token)}</span>`);
+            return String.fromCodePoint(0xE000 + tokens.length - 1);
+        }
+    );
+
+    let highlighted = escapeHtml(protectedCode)
+        .replace(/\b(var|new|return|public|private|protected|static|final|class|record|enum|extends|implements|import|package|true|false|null|this)\b/g,
+            '<span class="token-keyword">$1</span>')
+        .replace(/\b(State|String|InputProps|InputsPack|List|LocalDate|Double|Boolean|RadioGroup|Option)\b/g,
+            '<span class="token-type">$1</span>')
+        .replace(/\b([a-zA-Z_$][\w$]*)(?=\()/g, '<span class="token-method">$1</span>')
+        .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="token-number">$1</span>');
+
+    return highlighted.replace(/[\uE000-\uF8FF]/g,
+        marker => tokens[marker.codePointAt(0) - 0xE000]);
 }
 
 function renderPropsTable(data) {
@@ -182,6 +245,10 @@ function escapeHtml(str) {
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
+}
+
+function escapeAttribute(str) {
+    return escapeHtml(String(str)).replace(/"/g, "&quot;");
 }
 
 window.addEventListener("hashchange", () => {
