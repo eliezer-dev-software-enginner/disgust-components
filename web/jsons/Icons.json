@@ -1,0 +1,14 @@
+{
+  "component":"Feather icons",
+  "package":"disgust.icons",
+  "description":"Coleção nativa com 286 ícones Feather e uma interface Icon reutilizável, sem depender de Ikonli em runtime.",
+  "props":{
+    "size":{"type":"double","default":18,"description":"Tamanho positivo e finito do ícone."},
+    "color":{"type":"String | Color","default":"current theme","description":"Cor CSS ou Color usada na criação."}
+  },
+  "constraints":["Cada chamada create(...) retorna um Component novo","O tamanho precisa ser positivo e finito","Use Feather.findByDescription(...) somente com descrições existentes","A fonte Feather está embutida no JAR disgust-icons"],
+  "examples":[
+    {"title":"Ícones comuns","description":"Uma amostra da coleção; todos os 286 valores do enum Feather seguem a mesma API.","preview":[{"control":"icon-grid","items":[{"name":"search","label":"SEARCH"},{"name":"save","label":"SAVE"},{"name":"trash-2","label":"TRASH_2"},{"name":"send","label":"SEND"},{"name":"settings","label":"SETTINGS"},{"name":"user","label":"USER"},{"name":"calendar","label":"CALENDAR"},{"name":"image","label":"IMAGE"}]}],"code":"Component search = Feather.SEARCH.create();\nComponent save = Feather.SAVE.create(20, \"#2563eb\");\nComponent remove = Feather.TRASH_2.create(18, Color.web(\"#ef4444\"));\nFeather icon = Feather.findByDescription(\"fth-send\");"},
+    {"title":"Fábrica personalizada","description":"Icon é uma fábrica; implemente-a para reutilizar imagens ou outra composição como ícone.","preview":[{"control":"image-selector","label":"Ícone da empresa"}],"code":"Icon companyIcon = (size, color) ->\n        new Image(\"icons/company.png\",\n                new ImageProps().size((int) size));\n\nvar button = ButtonsPack.IconButton(\n        companyIcon, \"Abrir empresa\", this::openCompany);"}
+  ]
+}

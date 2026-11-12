@@ -1,0 +1,44 @@
+{
+  "component": "Material",
+  "package": "disgust.io.Material",
+  "description": "Composições nativas de estilo Material construídas com componentes Megalodonte e as cores do tema ativo.",
+  "props": {
+    "state": {"type":"State<T>","required":false,"description":"Controla dialog, snackbar, accordion, tabs, switch, slider, radio e progress."},
+    "content": {"type":"Component","required":false,"description":"Conteúdo nativo preservado por superfícies e sobreposições."},
+    "severity": {"enumRef":"Severity","default":"INFO","description":"Cor semântica de alertas, chips e snackbar."}
+  },
+  "enums": {"Severity":[{"value":"INFO"},{"value":"SUCCESS"},{"value":"WARNING"},{"value":"ERROR"}]},
+  "constraints": ["Configure ThemeManager antes de criar as composições","Alertas e chips exigem texto não vazio","Avatar aceita de um a três caracteres","Breadcrumbs e grupos de botões exigem ao menos um item"],
+  "examples": [
+    {
+      "title":"Status e metadados",
+      "description":"Alertas ocupam a largura disponível; chips apresentam estados compactos.",
+      "preview":[{"control":"alert","severity":"success","text":"Alterações salvas"},{"control":"alert","severity":"warning","text":"Revise os dados"},{"control":"chip","severity":"info","text":"Em análise"},{"control":"chip","severity":"error","text":"Bloqueado"}],
+      "code":"var saved = Material.alert(Severity.SUCCESS, \"Alterações salvas\");\nvar review = Material.alert(Severity.WARNING, \"Revise os dados\");\nvar status = Material.chip(\"Em análise\", Severity.INFO);"
+    },
+    {
+      "title":"Identidade e navegação",
+      "description":"Avatar, badge, breadcrumbs e tabs organizam identidade, contagem e contexto.",
+      "preview":[{"control":"avatar","text":"MD"},{"control":"badge","text":"UI","count":12},{"control":"breadcrumbs","items":["Início","Clientes","Maria"]},{"control":"tabs","items":["Dados","Endereço","Histórico"],"selected":1}],
+      "code":"var avatar = Material.avatar(\"MD\");\nvar notifications = Material.badge(avatar, 12);\nvar path = Material.breadcrumbs(List.of(\"Início\", \"Clientes\", \"Maria\"));\nvar selected = State.of(1);\nvar tabs = Material.tabs(List.of(\n        new Tabs.Page(\"Dados\", dataPanel),\n        new Tabs.Page(\"Endereço\", addressPanel)\n), selected);"
+    },
+    {
+      "title":"Ações e superfícies",
+      "description":"Agrupe botões, crie uma ação flutuante e envolva conteúdo em paper ou dialog.",
+      "preview":[{"text":"Salvar","variant":"PRIMARY"},{"text":"Cancelar","variant":"SECONDARY","style":"OUTLINED"},{"control":"divider"},{"control":"paper","title":"Resumo do pedido","text":"3 itens · R$ 480,00"},{"control":"dialog","title":"Confirmar exclusão","text":"Esta ação precisa de confirmação."}],
+      "code":"var actions = Material.buttonGroup(List.of(saveButton, cancelButton));\nvar add = Material.floatingActionButton(Feather.PLUS, \"Adicionar\", this::add);\nvar separator = Material.divider();\nvar surface = Material.paper(summary);\nvar dialog = Material.dialog(State.of(false), confirmation);"
+    },
+    {
+      "title":"Conteúdo expansível e feedback",
+      "description":"Accordion controla conteúdo recolhível; snackbar e progress comunicam o andamento.",
+      "preview":[{"control":"accordion","title":"Detalhes técnicos","text":"Conteúdo controlado por State<Boolean>."},{"control":"snackbar","text":"Pedido enviado com sucesso"},{"control":"progress","value":68}],
+      "code":"var accordion = Material.accordion(\"Detalhes técnicos\", details, State.of(true));\nvar feedback = Material.snackbar(screen, State.of(true), Severity.SUCCESS, \"Pedido enviado\");\nvar progress = Material.progress(State.of(68));"
+    },
+    {
+      "title":"Controles de formulário",
+      "description":"Aliases Material expõem Switch, Slider e RadioGroup nativos.",
+      "preview":[{"control":"switch","label":"Sincronização automática","checked":true},{"control":"range","label":"Intensidade","min":0,"max":100,"value":55},{"control":"radio","label":"Tema","options":["Sistema","Claro","Escuro"]}],
+      "code":"var automatic = Material.switchControl(\"Sincronização automática\", State.of(true));\nvar intensity = Material.slider(0, 100, State.of(55.0));\nvar theme = Material.radioGroup(\"Tema\", List.of(\n        new RadioGroup.Option(\"system\", \"Sistema\"),\n        new RadioGroup.Option(\"dark\", \"Escuro\")\n), State.of(\"system\"));"
+    }
+  ]
+}

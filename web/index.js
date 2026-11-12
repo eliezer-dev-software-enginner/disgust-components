@@ -1,6 +1,13 @@
-// Lista de arquivos JSON documentados — adicione aqui conforme novos packs
-// (InputsPack.json, etc.) forem gerados dentro de jsons/.
-const COMPONENT_FILES = ["ButtonsPack.json", "Inputs.json"];
+// Each file documents an existing native Java API. The HTML only illustrates it.
+const COMPONENT_FILES = [
+    "ButtonsPack.json",
+    "Inputs.json",
+    "Material.json",
+    "Compositions.json",
+    "BrazilianInputs.json",
+    "Tooltip.json",
+    "Icons.json"
+];
 
 const nav = document.getElementById("nav");
 const content = document.getElementById("content");
@@ -9,6 +16,7 @@ const components = {};
 async function loadAll() {
     for (const file of COMPONENT_FILES) {
         const res = await fetch(`jsons/${file}`);
+        if (!res.ok) throw new Error(`Não foi possível carregar ${file}`);
         const data = await res.json();
         components[data.component] = data;
 
@@ -20,7 +28,11 @@ async function loadAll() {
     }
 
     const initial = location.hash.replace("#", "") || Object.keys(components)[0];
-    render(initial);
+    render(components[initial] ? initial : Object.keys(components)[0]);
+}
+
+function renderLoadError(error) {
+    content.innerHTML = `<div class="load-error"><strong>Falha ao carregar o catálogo.</strong><span>${escapeHtml(error.message)}</span></div>`;
 }
 
 function render(name) {
@@ -76,6 +88,42 @@ function renderPreviewInput(item) {
 
     let control;
     switch (item.control) {
+        case "alert":
+            return `<div class="preview-alert preview-${item.severity || "info"}"><strong>${escapeHtml((item.severity || "info").toUpperCase())}</strong><span>${escapeHtml(item.text)}</span></div>`;
+        case "chip":
+            return `<span class="preview-chip preview-${item.severity || "info"}">${escapeHtml(item.text)}</span>`;
+        case "avatar":
+            return `<span class="preview-avatar">${escapeHtml(item.text)}</span>`;
+        case "badge":
+            return `<span class="preview-badge-wrap"><span class="preview-avatar">${escapeHtml(item.text || "UI")}</span><span class="preview-badge">${escapeHtml(String(item.count))}</span></span>`;
+        case "breadcrumbs":
+            return `<nav class="preview-breadcrumbs">${(item.items || []).map((part, index, all) => `<span class="${index === all.length - 1 ? "current" : ""}">${escapeHtml(part)}</span>`).join("<b>/</b>")}</nav>`;
+        case "divider":
+            return `<hr class="preview-divider">`;
+        case "paper":
+            return `<div class="preview-paper"><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.text || "")}</span></div>`;
+        case "dialog":
+            return `<div class="preview-dialog"><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.text)}</span><button>Fechar</button></div>`;
+        case "snackbar":
+            return `<div class="preview-snackbar">${escapeHtml(item.text)}</div>`;
+        case "accordion":
+            return `<details class="preview-accordion" open><summary>${escapeHtml(item.title)}</summary><p>${escapeHtml(item.text)}</p></details>`;
+        case "tabs":
+            return `<div class="preview-tabs">${(item.items || []).map((part, index) => `<span class="${index === (item.selected || 0) ? "active" : ""}">${escapeHtml(part)}</span>`).join("")}</div>`;
+        case "progress":
+            return `<div class="preview-progress"><span style="width:${Number(item.value) || 0}%"></span><b>${Number(item.value) || 0}%</b></div>`;
+        case "tooltip":
+            return `<span class="preview-tooltip"><button>${escapeHtml(item.label)}</button><span>${escapeHtml(item.text)}</span></span>`;
+        case "details":
+            return `<div class="preview-details"><strong>${escapeHtml(item.label)}</strong><span>${escapeHtml(item.value)}</span></div>`;
+        case "title":
+            return `<div class="preview-title"><strong>${escapeHtml(item.text)}</strong><span>${escapeHtml(item.subtitle || "")}</span></div>`;
+        case "image-selector":
+            return `<div class="preview-image-selector"><div>▧</div><strong>${escapeHtml(item.label)}</strong><button>Selecionar imagem</button></div>`;
+        case "menu-item":
+            return `<div class="preview-menu-item"><iconify-icon icon="feather:${item.icon || "box"}"></iconify-icon><span>${escapeHtml(item.label)}</span></div>`;
+        case "icon-grid":
+            return `<div class="preview-icon-grid">${(item.items || []).map(icon => `<div><iconify-icon icon="feather:${icon.name}"></iconify-icon><span>${escapeHtml(icon.label)}</span></div>`).join("")}</div>`;
         case "password":
             control = `<input id="${id}" type="password" value="${value}" placeholder="${placeholder}">`;
             break;
@@ -106,7 +154,12 @@ function renderPreviewInput(item) {
 }
 
 function renderPreviewButton(item, palette) {
-    const color = palette[item.variant] || palette.PRIMARY;
+    const colors = palette || {
+        PRIMARY: "#2563eb", SECONDARY: "#64748b", SUCCESS: "#10b981",
+        WARNING: "#f59e0b", DANGER: "#ef4444", DISABLED: "#64748b",
+        textOnFilled: "#ffffff"
+    };
+    const color = colors[item.variant] || colors.PRIMARY;
     const style = item.style || "FILLED";
     const size = item.size || "MEDIUM";
     const disabled = item.variant === "DISABLED";
@@ -117,7 +170,7 @@ function renderPreviewButton(item, palette) {
 
     let colorStyle;
     if (style === "FILLED") {
-        colorStyle = `background:${color}; color:${palette.textOnFilled}; border:1px solid ${color};`;
+        colorStyle = `background:${color}; color:${colors.textOnFilled}; border:1px solid ${color};`;
     } else if (style === "OUTLINED") {
         colorStyle = `background:transparent; color:${color}; border:1px solid ${color};`;
     } else {
@@ -160,7 +213,7 @@ function highlightJava(code) {
     let highlighted = escapeHtml(protectedCode)
         .replace(/\b(var|new|return|public|private|protected|static|final|class|record|enum|extends|implements|import|package|true|false|null|this)\b/g,
             '<span class="token-keyword">$1</span>')
-        .replace(/\b(State|String|InputProps|InputsPack|List|LocalDate|Double|Boolean|RadioGroup|Option)\b/g,
+        .replace(/\b(State|String|InputProps|InputsPack|Material|Severity|Pack|Tooltip|Feather|Icon|Component|List|LocalDate|Double|Boolean|RadioGroup|Option|Tabs|Page|Color)\b/g,
             '<span class="token-type">$1</span>')
         .replace(/\b([a-zA-Z_$][\w$]*)(?=\()/g, '<span class="token-method">$1</span>')
         .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="token-number">$1</span>');
@@ -241,7 +294,7 @@ async function onCopyClick(e) {
 }
 
 function escapeHtml(str) {
-    return str
+    return String(str)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
@@ -256,4 +309,4 @@ window.addEventListener("hashchange", () => {
     if (components[name]) render(name);
 });
 
-loadAll();
+loadAll().catch(renderLoadError);

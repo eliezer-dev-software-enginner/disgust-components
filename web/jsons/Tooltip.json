@@ -1,0 +1,17 @@
+{
+  "component":"Tooltip",
+  "package":"disgust.io.Tooltip",
+  "description":"Tooltip nativo acessível por mouse e teclado que preserva o componente filho, seu layout e seus handlers.",
+  "props":{
+    "title":{"type":"String","required":true,"description":"Texto exibido; vazio desativa o tooltip."},
+    "child":{"type":"Component","required":true,"description":"Componente nativo que recebe o tooltip."},
+    "enterDelay":{"type":"double","default":"JavaFX default","description":"Espera antes de exibir por hover, em milissegundos."},
+    "leaveDelay":{"type":"double","default":"JavaFX default","description":"Espera antes de ocultar, em milissegundos."},
+    "showDuration":{"type":"double","default":"JavaFX default","description":"Tempo máximo visível, em milissegundos."}
+  },
+  "constraints":["Durações precisam ser finitas e não negativas","Foco de teclado exibe o tooltip imediatamente","Um novo Tooltip no mesmo filho fecha o anterior","Chame close() quando o ciclo de vida do wrapper terminar"],
+  "examples":[
+    {"title":"Tooltip acessível","description":"A prévia mantém a dica visível para demonstrar o conteúdo que aparece por hover ou foco.","preview":[{"control":"tooltip","label":"Excluir","text":"Excluir registro"}],"code":"var deleteButton = ButtonsPack.IconButton(\n        Feather.TRASH_2, \"Excluir\", this::delete);\nvar deleteWithTooltip = new Tooltip(\"Excluir registro\", deleteButton);"},
+    {"title":"Tempos e atualização","description":"Configure os tempos em milissegundos e atualize o título sem recriar o filho.","preview":[{"control":"tooltip","label":"Salvar","text":"Salvar alterações (Ctrl+S)"}],"code":"try (var tooltip = new Tooltip(\"Salvar\", saveButton)\n        .enterDelay(300).leaveDelay(100).showDuration(5000)) {\n    tooltip.title(\"Salvar alterações (Ctrl+S)\");\n    tooltip.getJavaFxTooltip().setMaxWidth(360);\n}"}
+  ]
+}

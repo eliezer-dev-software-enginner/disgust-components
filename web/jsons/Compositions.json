@@ -1,0 +1,59 @@
+{
+  "component":"Compositions",
+  "package":"disgust.io.Pack",
+  "description":"Composições nativas reutilizáveis para títulos, formulários, seletores, imagens, menus e ações comuns.",
+  "props":{
+    "label":{"type":"String","required":false,"description":"Rótulo apresentado junto ao conteúdo ou controle."},
+    "state":{"type":"State<T> | ReadableState<T>","required":false,"description":"Estado reativo consumido pela composição."},
+    "placeholder":{"type":"String","required":false,"description":"Orientação exibida quando o campo está vazio."}
+  },
+  "constraints":["As composições retornam Component ou um subtipo nativo Megalodonte","Estados editáveis devem ser State; valores somente leitura podem usar ReadableState","Icon recebe uma fábrica reutilizável, enquanto cada Component pertence a um único pai","Seletores genéricos usam a função display para apresentar cada objeto"],
+  "examples":[
+    {
+      "title":"Títulos e detalhes",
+      "description":"Organize hierarquia textual e apresente valores simples ou reativos.",
+      "preview":[{"control":"title","text":"Cadastro do cliente","subtitle":"Dados principais e contato"},{"control":"details","label":"Situação","value":"Ativo"},{"control":"details","label":"Limite","value":"R$ 5.000,00"}],
+      "code":"var title = Pack.FormTitle(\"Cadastro do cliente\");\nvar subtitle = Pack.FormSubtitle(\"Dados principais e contato\");\nvar status = Pack.TextWithDetails(\"Situação\", \"Ativo\");\nvar limit = Pack.TextWithValue(\"Limite\", State.of(\"R$ 5.000,00\"));\nvar column = Pack.TextColumn(\"Responsável\", \"Maria\");"
+    },
+    {
+      "title":"Campos e validação de formato",
+      "description":"Componha campos rotulados de texto, números e decimais sem repetir o layout.",
+      "preview":[{"control":"text","label":"Código","value":"1024"},{"control":"text","label":"Quantidade","value":"12"},{"control":"text","label":"Preço","value":"149,90"}],
+      "code":"var code = Pack.InputColumn(\"Código\", State.of(\"\"), \"Informe o código\");\nvar quantity = Pack.InputColumnNumeric(\"Quantidade\", State.of(\"\"), \"0\");\nvar price = Pack.InputColumnDecimalFixedTwo(\"Preço\", State.of(\"\"), \"0,00\");\nvar measure = Pack.InputColumnDecimalFixedThree(\"Medida\", State.of(\"\"), \"0,000\");\nvar customDecimal = Pack.InputColumnDecimal(\"Valor\", State.of(\"\"), \"0,00\");"
+    },
+    {
+      "title":"Seleção, busca e ação",
+      "description":"Selecione objetos por display, pesquise texto ou associe um botão ao campo.",
+      "preview":[{"control":"select","label":"Cliente","options":["Maria","João","Ana"],"value":"Maria"},{"control":"text","label":"Buscar","placeholder":"Nome ou documento"},{"control":"text","label":"Código do produto","value":"ABC-10"},{"text":"Adicionar","variant":"PRIMARY"}],
+      "code":"var customer = Pack.SelectColumn(\"Cliente\", customers, selected, Customer::name);\nvar customerWithButton = Pack.SelectColumnWithButton(\n        \"Cliente\", customerListState, selected, Customer::name,\n        false, \"Novo\", this::create);\nvar search = Pack.searchInput(State.of(\"\"), \"Nome ou documento\");\nvar add = Pack.InputWithButtonRow(\"Produto\", \"Código\", \"Adicionar\", code, this::add);"
+    },
+    {
+      "title":"Data e texto longo",
+      "description":"DatePicker e TextArea recebem o mesmo layout rotulado das demais composições.",
+      "preview":[{"control":"date","label":"Data de entrega","value":"2026-11-12"},{"control":"textarea","label":"Observações","value":"Entregar no período da manhã.","wide":true}],
+      "code":"var delivery = Pack.DatePickerColumn(State.of(LocalDate.now()), \"Data de entrega\");\nvar notes = Pack.TextAreaColumn(\"Observações\", State.of(\"\"), \"Detalhes\", 90, 240);\nvar unrestricted = Pack.TextAreaColumnWidthNoRestricted(\"Descrição\", State.of(\"\"), \"Texto\", 160);"
+    },
+    {
+      "title":"Imagens, menus e ações",
+      "description":"Seletores de imagem, menu e botões de ação usam os componentes e ícones nativos.",
+      "preview":[{"control":"image-selector","label":"Logotipo"},{"control":"menu-item","label":"Configurações","icon":"settings"},{"text":"Salvar cadastro","variant":"PRIMARY"}],
+      "code":"var image = Pack.ImageSelector(\"Selecionar logotipo\", imagePath,\n        new ImageProps().size(120), this::choose);\nvar imageCard = Pack.CardImageSelector(\"Foto\", imagePath, this::choose);\nvar menu = Pack.MenuItem(\"Configurações\", Feather.SETTINGS, \"#2563eb\", this::openSettings);\nvar save = Pack.PrimaryActionButton(\"Salvar cadastro\", this::save);\nvar actions = Pack.actionButtons(buttonText, this::save);"
+    },
+    {
+      "title":"Layout e ícones",
+      "description":"Helpers menores integram ícones, imagem com texto, rolagem e propriedades comuns de entrada.",
+      "preview":[{"control":"menu-item","label":"Pesquisar","icon":"search"},{"control":"paper","title":"Conteúdo rolável","text":"A composição preserva o filho nativo."}],
+      "code":"var icon = Pack.icon(Feather.SEARCH, 20, \"#2563eb\");\nvar identity = Pack.imageWithTextRow(\"images/logo.png\", \"Disgust\");\nvar scrollable = Pack.ScrollPaneDefault(content);\nvar inputProps = Pack.getInputProps(\"Pesquisar\");\nvar enter = Pack.InputColumnComEnterHandler(\"Busca\", query, \"Termo\", this::search);"
+    }
+  ],
+  "shortcuts":[
+    {"name":"TextWithDetails / TextColumn / TextWithValue","overloads":[{"params":["label: String","value: Object","wrapText: boolean"]},{"params":["label: String","value: ReadableState<String>"]}]},
+    {"name":"FormTitle / FormSubtitle","overloads":[{"params":["title: String"]},{"params":["title: String","color: String"]}]},
+    {"name":"InputColumn","overloads":[{"params":["label: String","state: ReadableState<String>","placeholder: String"]},{"params":["label: String","state: ReadableState<String>","placeholder: String","disableInput: boolean","width: Integer"]}]},
+    {"name":"InputColumnNumeric / Decimal / FixedTwo / FixedThree","overloads":[{"params":["label: String","state: State<String>","placeholder: String"]}]},
+    {"name":"InputColumnAuth / InputColumnAuthFill","overloads":[{"params":["label: String","state: ReadableState<String>","placeholder: String"]},{"params":["label: String","state: ReadableState<String>","placeholder: String","width: int"]}]},
+    {"name":"SelectColumn","overloads":[{"params":["label: String","items: List<T> | State<List<T>> | ListState<T>","selected: State<T>","display: Function<T,String>"]},{"params":["...","compareById: boolean"]}]},
+    {"name":"TextAreaColumn","overloads":[{"params":["label: String","state: State<String>","placeholder: String"]},{"params":["label: String","state: State<String>","placeholder: String","height: int"]},{"params":["label: String","state: State<String>","placeholder: String","minHeight: int","maxHeight: int"]}]},
+    {"name":"ImageSelector / CardImageSelector","overloads":[{"params":["title: String","imageState: State<String>","props: ImageProps","callback: RunnableThrowing"]},{"params":["label: String","imageState: State<String>","handleChangeImage: RunnableThrowing"]}]}
+  ]
+}

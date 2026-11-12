@@ -1,0 +1,24 @@
+{
+  "component":"Brazilian inputs",
+  "package":"disgust.io.br.Pack",
+  "description":"Campos nativos com formatação de documentos, telefone, CEP e moeda usados em formulários brasileiros.",
+  "props":{
+    "label":{"type":"String","required":true,"description":"Rótulo visual do campo."},
+    "inputState":{"type":"State<String>","required":true,"description":"Valor vinculado ao campo formatado."},
+    "disableInput":{"type":"boolean","default":false,"description":"Desabilita a edição no campo de moeda."}
+  },
+  "constraints":["A máscara atua no controle nativo vinculado ao State<String>","CNPJ alfanumérico não substitui o campo numérico tradicional","Moeda possui sobrecarga para campo desabilitado"],
+  "examples":[
+    {"title":"Endereço e documentos","description":"CEP, CPF e CPF/CNPJ aplicam a máscara apropriada durante a digitação.","preview":[{"control":"text","label":"CEP","value":"30110-028"},{"control":"text","label":"CPF","value":"123.456.789-09"},{"control":"text","label":"CPF ou CNPJ","value":"12.345.678/0001-90"}],"code":"var cep = Pack.InputColumnCep(\"CEP\", State.of(\"\"));\nvar cpf = Pack.InputColumnCpf(\"CPF\", State.of(\"\"));\nvar document = Pack.InputColumnCpfCnpj(\"CPF ou CNPJ\", State.of(\"\"));"},
+    {"title":"CNPJ alfanumérico e telefone","description":"Use o campo alfanumérico quando o cadastro aceitar letras e o campo de telefone para números nacionais.","preview":[{"control":"text","label":"CNPJ alfanumérico","value":"12.ABC.345/01DE-90"},{"control":"text","label":"Telefone","value":"(31) 99876-5432"}],"code":"var cnpj = Pack.InputColumnCnpjAlfanumerico(\"CNPJ\", State.of(\"\"));\nvar phone = Pack.InputColumnPhone(\"Telefone\", State.of(\"\"));"},
+    {"title":"Moeda","description":"O campo monetário apresenta o valor em reais e pode ser somente leitura.","preview":[{"control":"text","label":"Total","value":"R$ 1.250,90"}],"code":"var amount = State.of(\"1250,90\");\nvar editable = Pack.InputColumnCurrency(\"Total\", amount);\nvar readOnly = Pack.InputColumnCurrency(\"Total\", amount, true);"}
+  ],
+  "shortcuts":[
+    {"name":"InputColumnCep","overloads":[{"params":["label: String","inputState: State<String>"]}]},
+    {"name":"InputColumnCpf","overloads":[{"params":["label: String","inputState: State<String>"]}]},
+    {"name":"InputColumnCpfCnpj","overloads":[{"params":["label: String","inputState: State<String>"]}]},
+    {"name":"InputColumnCnpjAlfanumerico","overloads":[{"params":["label: String","inputState: State<String>"]}]},
+    {"name":"InputColumnPhone","overloads":[{"params":["label: String","inputState: State<String>"]}]},
+    {"name":"InputColumnCurrency","overloads":[{"params":["label: String","inputState: State<String>"]},{"params":["label: String","inputState: State<String>","disableInput: boolean"]}]}
+  ]
+}

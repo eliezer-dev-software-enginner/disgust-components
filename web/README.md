@@ -18,6 +18,10 @@ The source of truth for each component is its Java implementation under
 `megalodonte-components`. The catalog must use the names, types, constraints,
 and examples from those APIs rather than creating a second component hierarchy.
 
+The current catalog covers buttons, inputs, Material-style compositions,
+general form compositions, Brazilian formatted inputs, Tooltip, and the
+Feather icon collection exported by the native libraries.
+
 ## Local preview
 
 The catalog loads JSON files with `fetch`, so serve it through a local HTTP
