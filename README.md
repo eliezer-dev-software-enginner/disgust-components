@@ -7,6 +7,12 @@ O [catálogo Material](docs/MATERIAL_COMPONENTS.md) reúne as composições nati
 inspiradas nos principais controles da MUI. Elas usam componentes Megalodonte e
 não carregam navegador ou WebView.
 
+A pasta [`web`](web/) contém somente a documentação estática desses componentes:
+ela descreve a API Java e ilustra o que o usuário enxerga nas aplicações desktop
+nativas. Não é um módulo Gradle, não publica um artefato `disgust-web` e não
+fornece componentes para navegador. A implementação consumida pelas aplicações
+permanece em `disgust-components`, `disgust-icons` e Megalodonte.
+
 ## Organização dos ícones
 
 `disgust-icons` é um subprojeto Gradle e um módulo Java (`disgust.icons`) separado,

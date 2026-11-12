@@ -69,6 +69,22 @@ body {
     max-width: 960px;
 }
 
+.documentation-notice {
+    display: grid;
+    gap: 4px;
+    margin-bottom: 28px;
+    padding: 14px 16px;
+    border: 1px solid #93c5fd;
+    border-radius: var(--radius);
+    background: #eff6ff;
+    color: #1e3a8a;
+    font-size: 14px;
+}
+
+.documentation-notice span {
+    color: #334155;
+}
+
 h1 {
     font-size: 32px;
     margin: 0 0 8px;

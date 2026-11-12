@@ -44,12 +44,12 @@
       "description": "Estica o botão na largura disponível do pai."
     },
     "iconStart": {
-      "type": "Ikon",
+      "type": "Icon | Component",
       "required": false,
       "description": "Ícone exibido antes do texto. Mutuamente exclusivo com iconEnd."
     },
     "iconEnd": {
-      "type": "Ikon",
+      "type": "Icon | Component",
       "required": false,
       "description": "Ícone exibido depois do texto. Mutuamente exclusivo com iconStart."
     },
@@ -106,8 +106,8 @@
       "style": "FILLED",
       "icon": "start",
       "overloads": [
-        { "params": ["text: String", "variant: ButtonVariant", "icon: Ikon", "onClick: RunnableThrowing"] },
-        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Ikon", "onClick: RunnableThrowing"] }
+        { "params": ["text: String", "variant: ButtonVariant", "icon: Icon", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Icon", "onClick: RunnableThrowing"] }
       ]
     },
     {
@@ -115,8 +115,8 @@
       "style": "FILLED",
       "icon": "end",
       "overloads": [
-        { "params": ["text: String", "variant: ButtonVariant", "icon: Ikon", "onClick: RunnableThrowing"] },
-        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Ikon", "onClick: RunnableThrowing"] }
+        { "params": ["text: String", "variant: ButtonVariant", "icon: Icon", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Icon", "onClick: RunnableThrowing"] }
       ]
     },
     {
@@ -134,8 +134,8 @@
       "style": "OUTLINED",
       "icon": "start",
       "overloads": [
-        { "params": ["text: String", "variant: ButtonVariant", "icon: Ikon", "onClick: RunnableThrowing"] },
-        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Ikon", "onClick: RunnableThrowing"] }
+        { "params": ["text: String", "variant: ButtonVariant", "icon: Icon", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Icon", "onClick: RunnableThrowing"] }
       ]
     },
     {
@@ -143,8 +143,8 @@
       "style": "OUTLINED",
       "icon": "end",
       "overloads": [
-        { "params": ["text: String", "variant: ButtonVariant", "icon: Ikon", "onClick: RunnableThrowing"] },
-        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Ikon", "onClick: RunnableThrowing"] }
+        { "params": ["text: String", "variant: ButtonVariant", "icon: Icon", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Icon", "onClick: RunnableThrowing"] }
       ]
     },
     {
@@ -162,8 +162,8 @@
       "style": "TEXT",
       "icon": "start",
       "overloads": [
-        { "params": ["text: String", "variant: ButtonVariant", "icon: Ikon", "onClick: RunnableThrowing"] },
-        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Ikon", "onClick: RunnableThrowing"] }
+        { "params": ["text: String", "variant: ButtonVariant", "icon: Icon", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Icon", "onClick: RunnableThrowing"] }
       ]
     },
     {
@@ -171,8 +171,8 @@
       "style": "TEXT",
       "icon": "end",
       "overloads": [
-        { "params": ["text: String", "variant: ButtonVariant", "icon: Ikon", "onClick: RunnableThrowing"] },
-        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Ikon", "onClick: RunnableThrowing"] }
+        { "params": ["text: String", "variant: ButtonVariant", "icon: Icon", "onClick: RunnableThrowing"] },
+        { "params": ["text: String", "variant: ButtonVariant", "fillWidth: boolean", "icon: Icon", "onClick: RunnableThrowing"] }
       ]
     }
   ],
@@ -212,10 +212,10 @@
   "title": "Icons",
   "description": "Ícone no início ou no fim do texto.",
   "preview": [
-    { "text": "Delete", "variant": "DANGER", "style": "FILLED", "icon": { "position": "start", "name": "delete-outlined" } },
-    { "text": "Send", "variant": "PRIMARY", "style": "FILLED", "icon": { "position": "end", "name": "send-outlined" } }
+    { "text": "Delete", "variant": "DANGER", "style": "FILLED", "icon": { "position": "start", "name": "trash-2" } },
+    { "text": "Send", "variant": "PRIMARY", "style": "FILLED", "icon": { "position": "end", "name": "send" } }
   ],
-  "code": "ButtonsPack.ContainedButtonWithIconStart(\"Delete\", ButtonVariant.DANGER, AntDesignIconsOutlined.DELETE, this::handleDelete);\nButtonsPack.ContainedButtonWithIconEnd(\"Send\", ButtonVariant.PRIMARY, AntDesignIconsOutlined.SEND, this::handleSend);"
+  "code": "ButtonsPack.ContainedButtonWithIconStart(\"Delete\", ButtonVariant.DANGER, Feather.TRASH_2, this::handleDelete);\nButtonsPack.ContainedButtonWithIconEnd(\"Send\", ButtonVariant.PRIMARY, Feather.SEND, this::handleSend);"
 },
     {
       "title": "Full width",

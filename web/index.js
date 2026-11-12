@@ -33,6 +33,10 @@ function render(name) {
     location.hash = name;
 
     content.innerHTML = `
+        <div class="documentation-notice">
+            <strong>Referência da interface nativa</strong>
+            <span>As prévias abaixo ilustram o que é renderizado pela API Java em aplicações Megalodonte. Elas não são componentes web.</span>
+        </div>
         <h1>${data.component}</h1>
         <p class="component-description">${data.description}</p>
         ${renderExamples(data)}
@@ -81,7 +85,7 @@ function renderPreviewButton(item, palette) {
     }
 
     const iconTag = item.icon
-        ? `<iconify-icon icon="ant-design:${item.icon.name}" class="preview-icon"></iconify-icon>`
+        ? `<iconify-icon icon="feather:${item.icon.name}" class="preview-icon"></iconify-icon>`
         : "";
     const iconStart = item.icon?.position === "start" ? iconTag : "";
     const iconEnd = item.icon?.position === "end" ? iconTag : "";

@@ -1,6 +1,5 @@
 rootProject.name = "disgust-components"
 include("disgust-icons")
-include("web")
 
 // The showcase is opt-in: ordinary build/test/publication never configure it.
 if (gradle.startParameter.taskNames.any {
