@@ -1,40 +1,43 @@
 # Disgust Components
 
-Biblioteca de composição para **Megalodonte**, com Java 25 e JavaFX 25.0.1.
-Configure o tema Megalodonte antes de construir os componentes.
+Composition library for **Megalodonte**, built with Java 25 and JavaFX 25.0.1.
+Configure the Megalodonte theme before constructing components.
 
-O [catálogo Material](docs/MATERIAL_COMPONENTS.md) reúne as composições nativas
-inspiradas nos principais controles da MUI. Elas usam componentes Megalodonte e
-não carregam navegador ou WebView.
+The [Material catalog](docs/MATERIAL_COMPONENTS.md) documents native
+compositions inspired by the main MUI controls. They use Megalodonte components
+and never load a browser or WebView.
 
-A pasta [`web`](web/) contém somente a documentação estática desses componentes:
-ela descreve a API Java e ilustra o que o usuário enxerga nas aplicações desktop
-nativas. Não é um módulo Gradle, não publica um artefato `disgust-web` e não
-fornece componentes para navegador. A implementação consumida pelas aplicações
-permanece em `disgust-components`, `disgust-icons` e Megalodonte.
+The [`web`](web/) directory contains only static documentation for these
+components. It describes the Java API and illustrates what users see in native
+desktop applications. It is not a Gradle module, does not publish a
+`disgust-web` artifact, and does not provide browser components. Applications
+consume the implementations from `disgust-components`, `disgust-icons`, and
+Megalodonte.
 
-Consulte o [mostruário público de componentes Disgust](https://disgust-components.vercel.app/#Button)
-para visualizar as prévias e copiar exemplos da API Java nativa.
+Visit the [public Disgust component showcase](https://disgust-components.vercel.app/#Button)
+to view previews and copy native Java API examples.
 
-## Organização dos ícones
+## Icon architecture
 
-`disgust-icons` é um subprojeto Gradle e um módulo Java (`disgust.icons`) separado,
-publicável como `disgust:disgust-icons:1.0.0-beta`. Ele depende de
-`megalodonte-base` e JavaFX, sem depender de `disgust-components` ou Ikonli.
-Assim, aplicações Megalodonte podem usar os ícones sem importar os packs de UI.
-`disgust-components` depende desse módulo e o reexporta via JPMS.
+`disgust-icons` is a separate Gradle subproject and Java module
+(`disgust.icons`), published as `disgust:disgust-icons:1.0.0-beta`. It depends
+on `megalodonte-base` and JavaFX without depending on `disgust-components` or
+Ikonli. Megalodonte applications can therefore use the icons without importing
+the UI packs. `disgust-components` depends on this module and reexports it
+through JPMS.
 
-A API pública trabalha com `Component`. `Icon` representa uma fábrica reutilizável
-que recebe tamanho/cor e cria um novo `Component` a cada chamada. `Feather`
-implementa essa interface. São 286 ícones, com os mesmos nomes e códigos da
-[referência Feather do Ikonli](https://kordamp.org/ikonli/cheat-sheet-feather.html).
-A fonte vem incorporada no JAR; não há descoberta de providers ou dependência
-Ikonli em execução.
+The public API works with `Component`. `Icon` is a reusable factory that accepts
+a size and color and creates a new `Component` for each call. `Feather`
+implements this interface. It provides 286 icons with the same names and codes
+as the [Ikonli Feather reference](https://kordamp.org/ikonli/cheat-sheet-feather.html).
+The font is embedded in the JAR; runtime does not require provider discovery or
+an Ikonli dependency.
 
-Essa separação permite acrescentar coleções e fábricas próprias sem acoplar os
-componentes a uma coleção específica. `Node` é detalhe interno da renderização.
+This separation allows additional icon collections and custom factories without
+coupling components to a specific collection. `Node` remains an internal
+rendering detail.
 
-## Ícones e botões
+## Icons and buttons
 
 ```java
 import disgust.icons.Feather;
@@ -46,106 +49,111 @@ import megalodonte.props.ImageProps;
 
 Component searchIcon = Feather.SEARCH.create(20, "#2563eb");
 
-var saveButton = ButtonsPack.ContainedButton("Salvar",
-        new ButtonsPack.Props().iconStart(Feather.SAVE).onClick(this::salvar));
+var saveButton = ButtonsPack.ContainedButton("Save",
+        new ButtonsPack.Props().iconStart(Feather.SAVE).onClick(this::save));
 
-// Qualquer Component pode ser usado como ícone de um botão.
+// Any Component can be used as a button icon.
 Component logo = new Image("icons/company.png", new ImageProps().size(18));
-var companyButton = ButtonsPack.TextButton("Empresa",
-        new ButtonsPack.Props().iconStart(logo).onClick(this::abrirEmpresa));
+var companyButton = ButtonsPack.TextButton("Company",
+        new ButtonsPack.Props().iconStart(logo).onClick(this::openCompany));
 
-// Para reutilizar a definição em vários botões, crie um Component novo por chamada.
+// Create a new Component per call when the definition is reused by several buttons.
 Icon companyIcon = (size, color) ->
         new Image("icons/company.png", new ImageProps().size((int) size));
 ```
 
-Use `iconStart` ou `iconEnd`. Uma instância de `Component` pertence a um único
-botão; uma fábrica `Icon` pode ser compartilhada. Componentes personalizados
-preservam sua própria aparência; fábricas podem aplicar o tamanho/cor recebidos.
-Feather aplica ambos automaticamente.
+Use `iconStart` or `iconEnd`. A `Component` instance belongs to one button; an
+`Icon` factory can be shared. Custom components preserve their own appearance,
+while factories can apply the received size and color. Feather applies both
+automatically.
 
-## Inputs nativos
+## Native inputs
 
-`InputsPack` reúne os controles de entrada usados por aplicações Disgust sem
-criar uma hierarquia visual própria. Os métodos retornam componentes Megalodonte
-nativos, vinculados a `State` e renderizados por JavaFX.
+`InputsPack` groups the input controls used by Disgust applications without
+creating a separate visual hierarchy. Its methods return native Megalodonte
+components bound to `State` and rendered by JavaFX.
 
 ```java
 var name = State.of("");
-var category = State.of("Produto acabado");
+var category = State.of("Finished product");
 var notifications = State.of(true);
 
 var nameInput = InputsPack.text(name,
-        new InputProps().placeHolder("Digite seu nome").fillWidth());
+        new InputProps().placeHolder("Enter your name").fillWidth());
 var categorySelect = InputsPack.select(
-        List.of("Matéria-prima", "Produto acabado", "Serviço"), category);
+        List.of("Raw material", "Finished product", "Service"), category);
 var notificationsInput = InputsPack.checkbox(
-        "Receber notificações", notifications);
+        "Receive notifications", notifications);
 ```
 
-Também estão disponíveis `password`, `textArea`, `date`, `switchControl`,
-`radioGroup`, `option` e `slider`. O [catálogo visual](web/) mostra todos os
-controles e exemplos copiáveis da API Java.
+The pack also provides `password`, `textArea`, `date`, `switchControl`,
+`radioGroup`, `option`, and `slider`. The [visual catalog](web/) shows every
+control and includes copyable Java API examples.
 
-## Tooltip e IconButton
+## Tooltip and IconButton
 
 ```java
 import disgust.icons.Feather;
 import disgust.io.ButtonsPack;
 import disgust.io.Tooltip;
 
-var deleteButton = ButtonsPack.IconButton(Feather.TRASH_2, "Excluir", this::excluir);
-var deleteWithTooltip = new Tooltip("Excluir registro", deleteButton)
+var deleteButton = ButtonsPack.IconButton(Feather.TRASH_2, "Delete", this::delete);
+var deleteWithTooltip = new Tooltip("Delete record", deleteButton)
         .enterDelay(300)
         .leaveDelay(100)
         .showDuration(5000);
 
-// Pode ser passado diretamente para children/c_child/r_child do Megalodonte.
+// It can be passed directly to Megalodonte children/c_child/r_child methods.
 row.r_child(deleteWithTooltip);
 ```
 
-`Tooltip` é um `Component` que recebe um filho `Component`. Ele conserva o nó,
-layout e handlers do filho. Usa o Tooltip nativo do JavaFX para hover e mostra a
-dica também no foco por teclado. As durações são em milissegundos; `enterDelay`
-se aplica ao hover, e o foco por teclado mostra a dica imediatamente.
-Título vazio desativa a dica. `title(...)` atualiza o texto; `close()` remove a
-instalação/listeners e oculta a dica. Ao instalar outro Tooltip Disgust no mesmo
-filho, o anterior é encerrado. Construa e configure os componentes na thread JavaFX.
+`Tooltip` is a `Component` that wraps a child `Component`. It preserves the
+child's node, layout, and handlers. It uses the native JavaFX Tooltip on hover
+and also displays it when keyboard focus reaches the child. Durations are in
+milliseconds: `enterDelay` applies to hover, while keyboard focus displays the
+tooltip immediately.
 
-O `IconButton` aceita `Icon` ou `Component`, exige um nome acessível e executa a
-ação tanto por clique quanto pela ativação de teclado do botão JavaFX. Para
-customização do popup, use `getJavaFxTooltip()` e a classe CSS `disgust-tooltip`.
+An empty title disables the tooltip. `title(...)` updates its text; `close()`
+removes its installation and listeners and hides it. Installing another Disgust
+Tooltip on the same child closes the previous instance. Construct and configure
+components on the JavaFX Application Thread.
 
-## Migração do Ikonli
+`IconButton` accepts an `Icon` or `Component`, requires an accessible name, and
+runs its action through mouse or keyboard activation of the JavaFX button. Use
+`getJavaFxTooltip()` and the `disgust-tooltip` CSS class for popup customization.
 
-- Substitua `Ikon` por `disgust.icons.Icon` nas definições reutilizáveis.
-- Substitua constantes de outras coleções por equivalentes Feather, por exemplo
-  `AntDesignIconsOutlined.SEARCH` por `Feather.SEARCH`.
-- Substitua `FontIcon.of(...)` por `Feather.SEARCH.create(tamanho, cor)`, que retorna
-  `Component` para uso direto na composição Megalodonte.
-- `Pack.ikon(...)` passa a ser `Pack.icon(...)`, retornando `Component`.
-- Os atalhos `ButtonsPack.*WithIconStart/End` e `Pack.MenuItem` recebem `Icon`.
-- Remova os `requires org.kordamp.ikonli.*` que sua aplicação não usa mais e use
-  `requires disgust.components`, ou `requires disgust.icons` para apenas ícones.
+## Migrating from Ikonli
 
-A mudança dos parâmetros é incompatível com chamadas que ainda passam `Ikon`.
-O artefato existente de componentes mantém o nome `distust-io-components` para
-preservar suas coordenadas de publicação.
+- Replace `Ikon` with `disgust.icons.Icon` in reusable definitions.
+- Replace constants from other collections with Feather equivalents, such as
+  `AntDesignIconsOutlined.SEARCH` with `Feather.SEARCH`.
+- Replace `FontIcon.of(...)` with `Feather.SEARCH.create(size, color)`, which
+  returns a `Component` for direct use in Megalodonte compositions.
+- Replace `Pack.ikon(...)` with `Pack.icon(...)`, which returns a `Component`.
+- `ButtonsPack.*WithIconStart/End` shortcuts and `Pack.MenuItem` accept `Icon`.
+- Remove unused `requires org.kordamp.ikonli.*` declarations and use
+  `requires disgust.components`, or `requires disgust.icons` when only icons
+  are needed.
 
-## Build e publicação local
+The parameter change is incompatible with calls that still pass `Ikon`. The
+existing components artifact retains the `distust-io-components` name to
+preserve its published coordinates.
 
-O build usa o Gradle Wrapper (Gradle 9.2.0) e requer um JDK 25 disponível
-para o toolchain. As dependências `megalodonte:*:1.0.0-beta` e
-`pack.utilities:pack-utilities:1.0.0` precisam estar disponíveis nos
-repositórios configurados (`mavenLocal()` ou Maven Central). Se esses
-artefatos não estiverem acessíveis, os comandos abaixo não concluem o build.
-O repositório não inclui o código dessas dependências.
+## Build and local publication
 
-### Mostruário `disgust-ui`
+The build uses the Gradle Wrapper (Gradle 9.2.0) and requires a JDK 25 toolchain.
+The `megalodonte:*:1.0.0-beta` and
+`pack.utilities:pack-utilities:1.0.0` dependencies must be available from the
+configured repositories (`mavenLocal()` or Maven Central). The commands below
+cannot complete when these artifacts are unavailable. Their source code is not
+included in this repository.
 
-Aplicação Megalodonte local para experimentar botões, Tooltip/IconButton, o catálogo
-Feather com busca, campos de formulário, máscaras brasileiras e composição.
-As ações geram apenas feedback local; não usam banco de dados ou serviços externos.
+### `disgust-ui` showcase
+
+`disgust-ui` is a local Megalodonte application for trying buttons,
+Tooltip/IconButton, the searchable Feather catalog, form fields, Brazilian
+masks, and compositions. Its actions only produce local feedback; they do not
+use a database or external services.
 
 ```powershell
 ./gradlew.bat :disgust-ui:run
@@ -153,43 +161,44 @@ As ações geram apenas feedback local; não usam banco de dados ou serviços ex
 ./gradlew.bat :disgust-ui:test
 ```
 
-No Linux, substitua `./gradlew.bat` por `./gradlew` nos comandos Gradle.
+On Linux, replace `./gradlew.bat` with `./gradlew` in Gradle commands.
 
-O módulo é **opcional**: `build`, `test` e `publishToMavenLocal` normais incluem
-somente as bibliotecas. `disgust-ui` só entra nas configurações quando uma tarefa
-dele é solicitada explicitamente. Não aplica `maven-publish` e não publica artefatos.
-Para importá-lo na IDE, habilite `-PwithUi=true` na sincronização Gradle; essa opção
-inclui o módulo na sessão e, portanto, também nas tarefas agregadas dessa sessão.
-Os testes do mostruário geram prévias em `disgust-ui/build/reports/previews`.
+The module is **optional**: regular `build`, `test`, and `publishToMavenLocal`
+tasks include only the libraries. `disgust-ui` is added to the build only when
+one of its tasks is explicitly requested. It does not apply `maven-publish` or
+publish artifacts. Enable `-PwithUi=true` during Gradle synchronization to
+import it into an IDE. This option includes the module in that session and
+therefore in its aggregate tasks as well. Showcase tests generate previews in
+`disgust-ui/build/reports/previews`.
 
-### Bibliotecas
+### Libraries
 
 ```powershell
 ./gradlew.bat test build
 ./gradlew.bat publishToMavenLocal
 ```
 
-O segundo comando publica ambos os artefatos. Aplicações usando somente ícones:
+The second command publishes both artifacts. Applications that only need icons
+can use:
 
 ```kotlin
 implementation("disgust:disgust-icons:1.0.0-beta")
 ```
 
-Os testes verificam todo o catálogo Feather, a fonte incorporada, criação de
-instâncias independentes, integração dos botões, acessibilidade/ação do IconButton
-e configuração, atualização, substituição e descarte de Tooltip.
+Tests cover the complete Feather catalog, embedded font, independent instance
+creation, button integration, IconButton accessibility and activation, and
+Tooltip configuration, updates, replacement, and disposal.
 
-O módulo `disgust.components` declara `requires pack.utilities` em seu
-`module-info.java`. Ao usar JPMS, o JAR de `pack-utilities` precisa expor esse
-nome de módulo; o build deste repositório não configura uma transformação
-de metadados para ele.
+The `disgust.components` module declares `requires pack.utilities` in its
+`module-info.java`. With JPMS, the `pack-utilities` JAR must expose that module
+name; this repository does not configure a metadata transformation for it.
 
-## Licença
+## License
 
-O README declara Disgust como MIT, mas este repositório não contém um arquivo
-de licença próprio; os termos do projeto precisam ser confirmados pelo
-mantenedor. A fonte Feather é MIT, e o mapeamento adaptado do Ikonli é
-Apache-2.0. As licenças e atribuições desses recursos estão incluídas em
-`META-INF` no JAR `disgust-icons`.
+Disgust is described as MIT, but this repository does not contain its own
+license file; the project terms require confirmation from the maintainer. The
+Feather font is MIT, and the mapping adapted from Ikonli is Apache-2.0. Licenses
+and attribution for these resources are included under `META-INF` in the
+`disgust-icons` JAR.
 
-Desenvolvido por **Eliezer**.
+Developed by **Eliezer**.
