@@ -13,6 +13,9 @@ nativas. Não é um módulo Gradle, não publica um artefato `disgust-web` e nã
 fornece componentes para navegador. A implementação consumida pelas aplicações
 permanece em `disgust-components`, `disgust-icons` e Megalodonte.
 
+Consulte o [mostruário público de componentes Disgust](https://disgust-components.vercel.app/#Button)
+para visualizar as prévias e copiar exemplos da API Java nativa.
+
 ## Organização dos ícones
 
 `disgust-icons` é um subprojeto Gradle e um módulo Java (`disgust.icons`) separado,
