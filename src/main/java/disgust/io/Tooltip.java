@@ -17,6 +17,8 @@ public final class Tooltip extends Component implements AutoCloseable {
     private final ChangeListener<Scene> sceneListener = (observable, oldScene, newScene) -> popup.hide();
     private boolean installed;
     private boolean closed;
+    
+    private static final double GAP = 6;
 
     public Tooltip(String title, Component child) {
         super(Objects.requireNonNull(child, "child").getJavaFxNode());
@@ -26,6 +28,9 @@ public final class Tooltip extends Component implements AutoCloseable {
         popup.setWrapText(true);
         popup.setMaxWidth(320);
         popup.getStyleClass().add("disgust-tooltip");
+        
+        javafx.application.Platform.runLater(()->relocate(GAP));
+        
         node.focusedProperty().addListener(focusListener);
         node.sceneProperty().addListener(sceneListener);
         title(title);
@@ -63,6 +68,61 @@ public final class Tooltip extends Component implements AutoCloseable {
         popup.setShowDuration(duration(milliseconds));
         return this;
     }
+    
+    public enum Position{TOP, BOTTOM, LEFT, RIGHT}
+    private Position position = Position.BOTTOM;
+    
+    public Tooltip position(Position position) {
+        return this.position(position, 6);
+    }
+    
+    public Tooltip position(Position position, double gap) {
+        ensureOpen();
+    	this.position = Objects.requireNonNull(position, "position");
+
+        if (popup.isShowing()) {
+            relocate(gap);
+        }
+        return this;
+    }
+    
+    private void relocate(double gap) {
+        if (closed || !popup.isShowing()) return;
+
+        Bounds bounds = node.localToScreen(node.getBoundsInLocal());
+        if (bounds == null) return;
+
+        double width = popup.getWidth();
+        double height = popup.getHeight();
+
+        double x;
+        double y;
+
+        switch (position) {
+            case TOP -> {
+                x = bounds.getCenterX() - width / 2;
+                y = bounds.getMinY() - height - gap;
+            }
+            case BOTTOM -> {
+                x = bounds.getCenterX() - width / 2;
+                y = bounds.getMaxY() + gap;
+            }
+            case LEFT -> {
+                x = bounds.getMinX() - width - gap;
+                y = bounds.getCenterY() - height / 2;
+            }
+            case RIGHT -> {
+                x = bounds.getMaxX() + gap;
+                y = bounds.getCenterY() - height / 2;
+            }
+            default -> throw new IllegalStateException(
+                "Unexpected position: " + position
+            );
+        }
+
+        popup.setX(x);
+        popup.setY(y);
+    }
 
     /** Native control for CSS, graphics and further JavaFX configuration. */
     public javafx.scene.control.Tooltip getJavaFxTooltip() { return popup; }
@@ -76,10 +136,12 @@ public final class Tooltip extends Component implements AutoCloseable {
 
     private void showForKeyboard() {
         if (closed || !installed || node.isDisabled() || node.getScene() == null) return;
+
         var window = node.getScene().getWindow();
         Bounds bounds = node.localToScreen(node.getBoundsInLocal());
+
         if (window != null && window.isShowing() && bounds != null) {
-            popup.show(node, bounds.getMinX(), bounds.getMaxY() + 6);
+            popup.show(node, bounds.getMinX(), bounds.getMaxY() + GAP);
         }
     }
 
