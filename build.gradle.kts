@@ -49,9 +49,9 @@ dependencies {
 
     // Megalodonte
     api("megalodonte:megalodonte-base-desktop:1.0.0-beta")
-    api("megalodonte:megalodonte-components:1.0.0-beta")
-    api("megalodonte:megalodonte-reactivity:1.0.0-beta")
-    implementation("megalodonte:megalodonte-router:1.0.0-beta")
+    api("megalodonte:megalodonte-components-desktop:1.0.0-beta")
+    api("megalodonte:megalodonte-reactivity-desktop:1.0.0-beta")
+    implementation("megalodonte:megalodonte-router-desktop:1.0.0-beta")
 
     //utilitties
     implementation("pack.utilities:pack-utilities:1.0.0")

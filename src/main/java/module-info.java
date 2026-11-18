@@ -1,7 +1,7 @@
 module disgust.components {
-    requires transitive megalodonte.base;
-    requires transitive megalodonte.components;
-    requires transitive megalodonte.reactivity;
+    requires transitive megalodonte.base.desktop;
+    requires transitive megalodonte.components.desktop;
+    requires transitive megalodonte.reactivity.desktop;
 
     requires transitive javafx.base;
     requires transitive javafx.graphics;
