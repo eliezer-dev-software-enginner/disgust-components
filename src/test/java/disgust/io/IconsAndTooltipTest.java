@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import megalodonte.base.components.Component;
 import megalodonte.base.theme.ThemeManager;
 import megalodonte.base.state.State;
-import megalodonte.props.ButtonVariant;
+import megalodonte.common_platform.ButtonVariant;
 import megalodonte.theme.DefaultTheme;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

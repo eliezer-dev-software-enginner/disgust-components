@@ -15,6 +15,8 @@ import megalodonte.components.inputs.OnChangeResult;
 import megalodonte.components.layout_components.Column;
 import megalodonte.components.layout_components.Row;
 import megalodonte.components.inputs.Input;
+import megalodonte.common_platform.ButtonStyle;
+import megalodonte.common_platform.ButtonVariant;
 import megalodonte.props.*;
 import megalodonte.props.InputProps;
 

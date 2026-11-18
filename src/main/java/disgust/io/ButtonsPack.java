@@ -6,10 +6,10 @@ import megalodonte.base.async.RunnableThrowing;
 import megalodonte.base.components.IconInterface;
 import megalodonte.base.components.Props;
 import megalodonte.components.Button;
+import megalodonte.common_platform.ButtonSize;
+import megalodonte.common_platform.ButtonStyle;
+import megalodonte.common_platform.ButtonVariant;
 import megalodonte.props.ButtonProps;
-import megalodonte.props.ButtonSize;
-import megalodonte.props.ButtonStyle;
-import megalodonte.props.ButtonVariant;
 import disgust.icons.Icon;
 import megalodonte.base.components.Component;
 
