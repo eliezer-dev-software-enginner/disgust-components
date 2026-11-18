@@ -10,7 +10,7 @@ repositories {
     mavenCentral()
     mavenLocal()
 }
-dependencies { api("megalodonte:megalodonte-base:1.0.0-beta") }
+dependencies { api("megalodonte:megalodonte-base-desktop:1.0.0-beta") }
 java {
     toolchain { languageVersion.set(JavaLanguageVersion.of(25)) }
     withSourcesJar()

@@ -48,7 +48,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
 
     // Megalodonte
-    api("megalodonte:megalodonte-base:1.0.0-beta")
+    api("megalodonte:megalodonte-base-desktop:1.0.0-beta")
     api("megalodonte:megalodonte-components:1.0.0-beta")
     api("megalodonte:megalodonte-reactivity:1.0.0-beta")
     implementation("megalodonte:megalodonte-router:1.0.0-beta")
